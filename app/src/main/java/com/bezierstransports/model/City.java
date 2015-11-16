@@ -1,0 +1,26 @@
+package com.bezierstransports.model;
+
+/**
+ * Created by Jérémy Pastor on 10/11/2015.
+ */
+public class City {
+
+    private long id;
+    private String cityName;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+}

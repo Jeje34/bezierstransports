@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dip"
+    android:orientation="vertical"
+    android:background="#666">
+
+    <TextView
+        android:id="@+id/next_departure_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#FFF"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+
+    <TextView
+        android:id="@+id/next_departure_time1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#FFF"
+        android:text="20:00"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:layout_toRightOf="@id/next_departure_label"/>
+
+    <TextView
+        android:id="@+id/next_departure_time_left1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11dip"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#FFF"
+        android:text="59 min"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:layout_toRightOf="@id/next_departure_time1"/>
+
+</RelativeLayout>
