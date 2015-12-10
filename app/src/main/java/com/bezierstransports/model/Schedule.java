@@ -11,6 +11,8 @@ public class Schedule {
     private Period period;
     private Date schedule;
 
+    public Schedule() {    }
+
     public Period getPeriod() {
         return period;
     }
@@ -38,7 +40,9 @@ public class Schedule {
     @Override
     public String toString() {
         return "Schedule{" +
-                "schedule=" + schedule +
+                "lineStation=" + lineStation +
+                ", period=" + period +
+                ", schedule=" + schedule +
                 '}';
     }
 }

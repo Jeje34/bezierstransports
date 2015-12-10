@@ -71,7 +71,6 @@ public class ScheduleDAO {
         // select the period that match with the current day (to improve)
         String period1, period2;
         String dayString = BeziersTransports.getDayFormat().format(BeziersTransports.getDay());
-        Log.d("DATEJOUR", dayString);
         if (dayString.equals("lundi") || dayString.equals("mardi") || dayString.equals("mercredi")
                 || dayString.equals("jeudi") || dayString.equals("vendredi")) {
             period1 = "1"; // because idPeriod = 1 <=> LV

@@ -46,5 +46,13 @@ public class LineStation {
         this.ordre = ordre;
     }
 
-
+    @Override
+    public String toString() {
+        return "LineStation{" +
+                "line=" + line +
+                ", station=" + station +
+                ", direction='" + direction + '\'' +
+                ", ordre=" + ordre +
+                '}';
+    }
 }

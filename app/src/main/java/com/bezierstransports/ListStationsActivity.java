@@ -2,6 +2,7 @@ package com.bezierstransports;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,9 +19,18 @@ import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Schedule;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListStationsActivity extends AppCompatActivity {
 
@@ -96,17 +106,12 @@ public class ListStationsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_upload_schedules:
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void getData (final String direction) {
@@ -128,11 +133,13 @@ public class ListStationsActivity extends AppCompatActivity {
                     List<Schedule> next3Departures = ScheduleDAO.getScheduleDAO().get3NextDepartures(result.get(i));
                     listDataChild.put(result.get(i), next3Departures);
                 }
+
                 expandableAdapterLineStation = new AdapterStationSchedule(BeziersTransports.getAppContext(),
                         result, listDataChild);
                 expandableListView.setAdapter(expandableAdapterLineStation);
             }
         }.execute();
     }
+
 
 }

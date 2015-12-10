@@ -1,6 +1,8 @@
 package com.bezierstransports.adapter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -28,7 +30,14 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
                                   HashMap<LineStation, List<Schedule>> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
+
         this.listDataChild = listChildData;
+
+        for (Map.Entry<LineStation,List<Schedule>> entry : listChildData.entrySet()) {
+            LineStation key = entry.getKey();
+            List<Schedule> value = entry.getValue();
+            value.add(0, new Schedule());
+        }
     }
 
     @Override
@@ -44,8 +53,20 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
+
         ViewHolderChild viewHolder;
+        ViewHolderEmptyChild viewHolderEmpty;
+
         final Schedule schedule = (Schedule) getChild(groupPosition, childPosition);
+
+        // to not display the first empty Schedule of the list
+        if (schedule.getSchedule() == null) {
+            viewHolderEmpty = new ViewHolderEmptyChild();
+            LayoutInflater infalInflater = (LayoutInflater) this.context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.list_item_empty, null);
+            return convertView;
+        }
 
         viewHolder = new ViewHolderChild();
         LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -53,24 +74,29 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
         convertView = infalInflater.inflate(R.layout.list_item, null);
 
         viewHolder.nextDepartureLabel = (TextView) convertView.findViewById(R.id.next_departure_label);
-        if (childPosition == 0) {
-            viewHolder.nextDepartureLabel.setText(R.string.next_departure);
-        }
-        else if (childPosition == 1) {
-            viewHolder.nextDepartureLabel.setText("                2-                ");
-        }
-        else if (childPosition == 2) {
-            viewHolder.nextDepartureLabel.setText("                3-                ");
+
+        // if no children
+        if (this.getChildrenCount(groupPosition) == 1) {
+            viewHolder.nextDepartureLabel.setText(R.string.next_departure_tomorrow);
+        } else {
+            if (childPosition == 1) {
+                viewHolder.nextDepartureLabel.setText(R.string.next_departure);
+            } else if (childPosition == 2) {
+                viewHolder.nextDepartureLabel.setText("                2-                ");
+            } else if (childPosition == 3) {
+                viewHolder.nextDepartureLabel.setText("                3-                ");
+            }
+
+            viewHolder.nextDepartureTime1 = (TextView) convertView.findViewById(R.id.next_departure_time1);
+            viewHolder.nextDepartureTime1.setText(BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
+
+            viewHolder.nextDepartureTimeLeft1 = (TextView) convertView.findViewById(R.id.next_departure_time_left1);
+            // time left in minutes =  time schedule - time now
+            long diff_ms = schedule.getSchedule().getTime() - BeziersTransports.getTimeNow().getTime(); // milliseconds
+            long diff_min = diff_ms / (1000 * 60); // minutes
+            viewHolder.nextDepartureTimeLeft1.setText("(" + diff_min + " min)");
         }
 
-        viewHolder.nextDepartureTime1 = (TextView) convertView.findViewById(R.id.next_departure_time1);
-        viewHolder.nextDepartureTime1.setText(BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
-
-        viewHolder.nextDepartureTimeLeft1 = (TextView) convertView.findViewById(R.id.next_departure_time_left1);
-        // time left in minutes =  time schedule - time now
-        long diff_ms = schedule.getSchedule().getTime() - BeziersTransports.getTimeNow().getTime(); // milliseconds
-        long diff_min = diff_ms / (1000 * 60); // minutes
-        viewHolder.nextDepartureTimeLeft1.setText("(" + diff_min + " min)");
         return convertView;
     }
 
@@ -80,9 +106,16 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
         TextView nextDepartureTimeLeft1;
     }
 
-    @Override
+    private class ViewHolderEmptyChild {  }
+
+
+
+    // return 1 if no children because of the empty Schedule (see constructor) in the aim to call getView
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
+        if(this.listDataChild.get(this.listDataHeader.get(groupPosition)).size() != 0){
+            return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
+        }
+        return 1;
     }
 
     @Override
@@ -102,6 +135,7 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int position, boolean isExpanded, View convertView, ViewGroup parent) {
+
         ViewHolderGroup viewHolder;
         LineStation lineStation = (LineStation) getGroup(position);
         if (convertView == null) {

@@ -11,8 +11,10 @@
         android:theme="@style/AppTheme"
         android:largeHeap="true"
         android:name="com.bezierstransports.BeziersTransports">
+
         <activity
             android:name=".ListLinesActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,9 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ListStationsActivity"
-            android:label="@string/title_activity_list_stations" >
+            android:label="@string/title_activity_list_stations"
+            android:configChanges="orientation|screenSize" >
         </activity>
     </application>
 
