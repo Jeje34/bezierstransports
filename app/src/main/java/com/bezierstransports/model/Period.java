@@ -9,6 +9,8 @@ public class Period {
     private String period;
     private String season;
 
+    public Period() {  }
+
     public long getId() {
         return id;
     }

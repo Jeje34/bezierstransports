@@ -43,6 +43,14 @@ public class Line implements Parcelable {
         this.stations = stations;
     }
 
+    @Override
+    public String toString() {
+        return "Line{" +
+                "lineName='" + lineName + '\'' +
+                ", lineNumber='" + lineNumber + '\'' +
+                '}';
+    }
+
     private Line(Parcel in) {
         this.lineNumber = in.readString();
         this.lineName = in.readString();;
@@ -66,12 +74,4 @@ public class Line implements Parcelable {
             return new Line[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "Line{" +
-                "lineName='" + lineName + '\'' +
-                ", lineNumber='" + lineNumber + '\'' +
-                '}';
-    }
 }

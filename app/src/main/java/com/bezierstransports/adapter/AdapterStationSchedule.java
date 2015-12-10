@@ -33,8 +33,9 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
 
         this.listDataChild = listChildData;
 
+        /* add a empty schedule at the beginning of the value list, to still
+         call getChildView() in the case there are no children */
         for (Map.Entry<LineStation,List<Schedule>> entry : listChildData.entrySet()) {
-            LineStation key = entry.getKey();
             List<Schedule> value = entry.getValue();
             value.add(0, new Schedule());
         }
@@ -54,31 +55,27 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        ViewHolderChild viewHolder;
-        ViewHolderEmptyChild viewHolderEmpty;
-
+        ViewHolderChild viewHolder = new ViewHolderChild();
         final Schedule schedule = (Schedule) getChild(groupPosition, childPosition);
 
-        // to not display the first empty Schedule of the list
-        if (schedule.getSchedule() == null) {
-            viewHolderEmpty = new ViewHolderEmptyChild();
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item_empty, null);
-            return convertView;
-        }
-
-        viewHolder = new ViewHolderChild();
         LayoutInflater infalInflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = infalInflater.inflate(R.layout.list_item, null);
 
         viewHolder.nextDepartureLabel = (TextView) convertView.findViewById(R.id.next_departure_label);
 
-        // if no children
-        if (this.getChildrenCount(groupPosition) == 1) {
-            viewHolder.nextDepartureLabel.setText(R.string.next_departure_tomorrow);
+        // for the first child (an empty Schedule)...
+        if (schedule.getSchedule() == null && childPosition == 0) {
+            if (this.getChildrenCount(groupPosition) == 1) {
+                // ...if no other children: display a message
+                viewHolder.nextDepartureLabel.setText(R.string.next_departure_tomorrow);
+            } else {
+                // ...if other children: don't display the empty Schedule
+                convertView = infalInflater.inflate(R.layout.list_item_empty, null);
+            }
+
         } else {
+            // for other children, display time et time left
             if (childPosition == 1) {
                 viewHolder.nextDepartureLabel.setText(R.string.next_departure);
             } else if (childPosition == 2) {
@@ -107,8 +104,6 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
     }
 
     private class ViewHolderEmptyChild {  }
-
-
 
     // return 1 if no children because of the empty Schedule (see constructor) in the aim to call getView
     public int getChildrenCount(int groupPosition) {

@@ -5,10 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_stations">ListStationsActivity</string>
 
+    <string name="ligne">Ligne</string>
     <string name="ligne_direction">Ligne / Direction</string>
     <string name="station">Station</string>
     <string name="next_departure">Prochain passage :</string>
 
     <string name="upload_schedules">Télécharger les horaires :</string>
     <string name="next_departure_tomorrow">Plus de passage pour aujourd\'hui !</string>
+    <string name="title_activity_list_schedules">ListSchedulesActivity</string>
 </resources>

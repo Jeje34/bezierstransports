@@ -2,15 +2,16 @@ package com.bezierstransports;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.bezierstransports.adapter.AdapterStationSchedule;
 import com.bezierstransports.database.LineStationDAO;
@@ -19,18 +20,9 @@ import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Schedule;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ListStationsActivity extends AppCompatActivity {
 
@@ -54,15 +46,22 @@ public class ListStationsActivity extends AppCompatActivity {
         // get the object line from the last activity
         Intent i = getIntent();
         line = (Line) i.getParcelableExtra("line");
+
         getData("A");
 
         // split the name line to set 2 directions
         String[] parts = line.getLineName().split("- ");
-        radioButtonAller.setText(parts[0]);
-        radioButtonRetour.setText(parts[parts.length - 1]);
+        radioButtonAller.setText(parts[parts.length - 1]);
+        radioButtonRetour.setText(parts[0]);
+
+        setTitle(getString(R.string.ligne) + " " + line.getLineNumber());
+
+        Toast.makeText(getApplicationContext(), "Restez appuyé sur une station pour voir tous les horaires de passage à celle-ci",
+                Toast.LENGTH_LONG).show();
 
         radioButtonAller.setOnClickListener(radioButtonAllerListener);
         radioButtonRetour.setOnClickListener(radioButtonRetourListener);
+        expandableListView.setOnItemLongClickListener(groupLongClickListener);
 
         // thread that update time every minute and update the list
         Thread t = new Thread() {
@@ -117,7 +116,6 @@ public class ListStationsActivity extends AppCompatActivity {
     private void getData (final String direction) {
         new AsyncTask<Void, Void, List<LineStation>>() {
 
-
             protected List<LineStation> doInBackground(Void... params) {
                 List<LineStation> liste = LineStationDAO.getLineStationDAO().getLineStations(line, direction);
                 if (liste != null) {
@@ -141,5 +139,33 @@ public class ListStationsActivity extends AppCompatActivity {
         }.execute();
     }
 
+    // long click on item LineStation launches activity that list all schedules of the LineStation
+    private ExpandableListView.OnItemLongClickListener groupLongClickListener = new ExpandableListView.OnItemLongClickListener() {
 
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+            int itemType = ExpandableListView.getPackedPositionType(id);
+
+            // handle only long click on group item
+            if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                onGroupLongClick(position);
+                return true;
+            } else {
+                // do nothing if long click on child item
+                return false;
+            }
+        }
+    };
+
+    private void onGroupLongClick(long packedPosition) {
+         if (expandableAdapterLineStation != null) {
+            // get the lineStation selected
+            LineStation lineStation = (LineStation) expandableAdapterLineStation.getGroup((int) packedPosition);
+            if (lineStation != null) {
+                Intent i = new Intent(ListStationsActivity.this, ListSchedulesActivity.class);
+                i.putExtra("lineStation", lineStation);
+                startActivity(i);
+            }
+        }
+    }
 }

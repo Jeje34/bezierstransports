@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="55dip"
     android:orientation="vertical"
-    android:background="#666">
+    android:background="#666" >
 
     <TextView
         android:id="@+id/next_departure_label"

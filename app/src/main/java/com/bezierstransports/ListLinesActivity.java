@@ -30,12 +30,11 @@ public class ListLinesActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_lines_activity);
 
+        setTitle("Béziers Transports");
         listViewLines = (ListView) findViewById(R.id.listViewLines);
 
         getData();
         listViewLines.setOnItemClickListener(this);
-
-
     }
 
 
@@ -75,6 +74,7 @@ public class ListLinesActivity extends AppCompatActivity implements AdapterView.
 
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
         if (adapterLine != null) {
             // get the line selected
             Line line = adapterLine.getItem(position);
