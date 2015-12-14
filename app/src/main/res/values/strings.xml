@@ -13,4 +13,8 @@
     <string name="upload_schedules">Télécharger les horaires :</string>
     <string name="next_departure_tomorrow">Plus de passage pour aujourd\'hui !</string>
     <string name="title_activity_list_schedules">ListSchedulesActivity</string>
+    <string name="periode">Periode</string>
+    <string name="horaires">Horaires</string>
+    <string name="lundiASamedi">Lundi à samedi</string>
+    <string name="dimanche">Dimanche</string>
 </resources>

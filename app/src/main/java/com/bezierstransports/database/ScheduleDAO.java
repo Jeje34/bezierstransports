@@ -117,4 +117,37 @@ public class ScheduleDAO {
     }
 
 
+    public List<Schedule> getSchedules(LineStation ls) {
+        SQLiteDatabase db = this.dh.getReadableDatabase();
+        List<Schedule> schedulesList = new ArrayList<Schedule>();
+
+        Cursor cursor = db.query(DatabaseHandler.TABLE_SCHEDULE,
+                new String[]{DatabaseHandler.KEY_LINENUMBER, DatabaseHandler.KEY_IDSTATION,
+                        DatabaseHandler.KEY_IDPERIOD, DatabaseHandler.KEY_DIRECTION, DatabaseHandler.KEY_SCHEDULE},
+                DatabaseHandler.KEY_LINENUMBER + "= ? AND " + DatabaseHandler.KEY_IDSTATION + " = ? AND " +
+                        DatabaseHandler.KEY_DIRECTION + " = ?",
+                new String[]{ls.getLine().getLineNumber(), String.valueOf(ls.getStation().getId()),
+                        ls.getDirection()}
+                , null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Schedule schedule = new Schedule();
+                schedule.setLineStation(LineStationDAO.getLineStationDAO().getLineStation(
+                                LineDAO.getLineDAO().getLine(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER))),
+                                StationDAO.getStationDAO().getStation(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION))),
+                                cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DIRECTION)))
+                );
+                schedule.setPeriod(PeriodDAO.getPeriodDAO().getPeriod(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDPERIOD))));
+                try {
+                    schedule.setSchedule(BeziersTransports.getScheduleFormat().parse(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SCHEDULE))));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                schedulesList.add(schedule);
+            } while (cursor.moveToNext());
+        }
+        return schedulesList;
+    }
 }

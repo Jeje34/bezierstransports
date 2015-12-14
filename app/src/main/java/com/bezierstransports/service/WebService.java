@@ -25,13 +25,12 @@ import java.util.List;
 
 public class WebService {
 
-    //private final String URL = "http://www.petit-fichier.fr/2015/11/14/bezierstransports-1/bezierstransports.json";
-    private final String URL = "http://www.petit-fichier.fr/2015/12/10/bezierstransport/bezierstransport.json";
+    private final String URL = "http://www.petit-fichier.fr/2015/11/14/bezierstransports-1/bezierstransports.json";
     Gson gson;
 
 
     public WebService(Context context) {
-        this.gson = new GsonBuilder().setDateFormat("hh:mm").create();;
+        this.gson = new GsonBuilder().setDateFormat("HH:mm").create();;
     }
 
 
