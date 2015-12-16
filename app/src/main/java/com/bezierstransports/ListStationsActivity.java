@@ -111,8 +111,8 @@ public class ListStationsActivity extends AppCompatActivity {
             case R.id.action_upload_schedules:
             case R.id.action_map:
                 Intent i = new Intent(ListStationsActivity.this, LineMapActivity.class);
+                i.putExtra("line", line);
                 startActivity(i);
-                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

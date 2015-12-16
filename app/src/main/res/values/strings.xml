@@ -10,7 +10,7 @@
     <string name="station">Station</string>
     <string name="next_departure">Prochain passage :</string>
 
-    <string name="upload_schedules">Télécharger les horaires :</string>
+    <string name="upload_schedules">Télécharger les horaires en PDF</string>
     <string name="next_departure_tomorrow">Plus de passage pour aujourd\'hui !</string>
     <string name="title_activity_list_schedules">ListSchedulesActivity</string>
     <string name="periode">Periode</string>

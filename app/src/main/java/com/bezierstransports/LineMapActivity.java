@@ -1,21 +1,41 @@
 package com.bezierstransports;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.bezierstransports.database.StationDAO;
+import com.bezierstransports.model.Line;
+import com.bezierstransports.model.Station;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 public class LineMapActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Line line;
+    private ArrayList<Marker> markers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.line_map_activity);
+
+
+        // get the object line from the last activity
+        Intent i = getIntent();
+        line = (Line) i.getParcelableExtra("line");
+        line.setStations(StationDAO.getStationDAO().getStations(line));
+
         setUpMapIfNeeded();
     }
 
@@ -54,12 +74,31 @@ public class LineMapActivity extends FragmentActivity {
     }
 
     /**
-     * This is where we can add markers or lines, add listeners or move the camera. In this case, we
-     * just add a marker near Africa.
-     * <p/>
+     * This is where we can add markers or lines, add listeners or move the camera.
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        for (Station station : line.getStations()) {
+
+            /* add markers for each station of the line on the map
+            and save marker in a list */
+            markers.add(mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                    .title(station.getStationName())));
+
+            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+
+                public void onMapLoaded() {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (Marker marker : markers) {
+                        builder.include(marker.getPosition());
+                    }
+                    LatLngBounds bounds = builder.build();
+                    int padding = 0;
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    mMap.moveCamera(cu);
+                }
+            });
+        }
     }
 }

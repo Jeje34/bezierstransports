@@ -64,18 +64,19 @@ public final class StationDAO {
 
     // get the stations list of the line given
     public List<Station> getStations(Line line) {
+
         SQLiteDatabase db = this.dh.getReadableDatabase();
         List<Station> stationsList = new ArrayList<Station>();
 
         String SELECT_STATIONS_QUERY = "SELECT * FROM " +
                 DatabaseHandler.TABLE_STATION + " s, " + DatabaseHandler.TABLE_LINE_STATION + " ls WHERE s."
                 + DatabaseHandler.KEY_ID + "=ls." + DatabaseHandler.KEY_IDSTATION + " AND ls." + DatabaseHandler.KEY_LINENUMBER +
-                " = ? GROUP BY s." + DatabaseHandler.KEY_ID;
+                " = ?";/* GROUP BY s." + DatabaseHandler.KEY_ID*/;
         Cursor cursor = db.rawQuery(SELECT_STATIONS_QUERY, new String[]{line.getLineNumber()});
 
         if (cursor.moveToFirst()) {
             do {
-                Station station = getStationWithLines(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION));
+                Station station = getStation(cursor.getInt(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION)));
                 stationsList.add(station);
             } while (cursor.moveToNext());
         }
