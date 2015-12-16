@@ -33,6 +33,8 @@ public class ListSchedulesActivity extends AppCompatActivity {
     ListView listViewSchedules;
     AdapterSchedule adapterSchedule;
     List<Schedule> scheduleList;
+    RadioButton radioButtonAller;
+    RadioButton radioButtonRetour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,22 @@ public class ListSchedulesActivity extends AppCompatActivity {
         listViewSchedules = (ListView) findViewById(R.id.listViewSchedules);
         radioGroupPeriod = (RadioGroup) findViewById(R.id.radio_group_period);
 
+
+
+        radioButtonAller = (RadioButton) findViewById(R.id.radio_button_aller_2);
+        radioButtonRetour = (RadioButton) findViewById(R.id.radio_button_retour_2);
+
+        // split the name line to set 2 directions
+        String[] parts = lineStation.getLine().getLineName().split("- ");
+        radioButtonAller.setText(parts[parts.length - 1]);
+        radioButtonRetour.setText(parts[0]);
+
         scheduleList = ScheduleDAO.getScheduleDAO().getSchedules(lineStation);
         addRadioButtons();
+        radioGroupPeriod.check(0);
+
+        radioButtonAller.setOnClickListener(radioButtonAllerListener);
+        radioButtonRetour.setOnClickListener(radioButtonRetourListener);
     }
 
     @Override
@@ -95,22 +111,72 @@ public class ListSchedulesActivity extends AppCompatActivity {
                 labelRadioButtonList.add(period);
                 // add radio button to radio group
                 RadioButton button = new RadioButton(this);
-                //if (i==0) button.setChecked(true);
                 button.setId(i); i++;
                 button.setText(labelPeriod);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getData(period);
-                    }
-                });
                 radioGroupPeriod.addView(button);
             }
         }
+
+        radioGroupPeriod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radiobutton = (RadioButton) findViewById(checkedId);
+                String period = radiobutton.getText().toString();
+                if (period.equals(getString(R.string.lundiASamedi))) {
+                    if (radioButtonAller.isChecked()) {
+                        getData("LS", "A");
+                    } else {
+                        getData("LS", "R");
+                    }
+                } else if (period.equals(getString(R.string.dimanche))) {
+                    if (radioButtonAller.isChecked()) {
+                        getData("D", "A");
+                    } else {
+                        getData("D", "R");
+                    }
+                }
+            }
+        });
     }
 
+    private View.OnClickListener radioButtonAllerListener = new View.OnClickListener(){
+        public void onClick(View v) {
+            for (int i=0 ; i < radioGroupPeriod.getChildCount() ; i++) {
+                RadioButton radiobutton = (RadioButton) findViewById(i);
+                if (radiobutton.isChecked()) {
+                    String period = radiobutton.getText().toString();
+                    if (period.equals(getString(R.string.lundiASamedi))) {
+                        getData("LS", "A");
+                        break;
+                    } else if (period.equals(getString(R.string.dimanche))) {
+                        getData("D", "A");
+                        break;
+                    }
+                }
+            }
+        }
+    };
 
-    private void getData (final String period) {
+    private View.OnClickListener radioButtonRetourListener = new View.OnClickListener(){
+        public void onClick(View v) {
+            for (int i=0 ; i < radioGroupPeriod.getChildCount() ; i++) {
+                RadioButton radiobutton = (RadioButton) findViewById(i);
+                if (radiobutton.isChecked()) {
+                    String period = radiobutton.getText().toString();
+                    if (period.equals(getString(R.string.lundiASamedi))) {
+                        getData("LS", "R");
+                        break;
+                    } else if (period.equals(getString(R.string.dimanche))) {
+                        getData("D", "R");
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+
+    private void getData (final String period, final String direction) {
         new AsyncTask<Void, Void, List<Schedule>>() {
 
             protected List<Schedule> doInBackground(Void... params) {
@@ -118,7 +184,9 @@ public class ListSchedulesActivity extends AppCompatActivity {
                     ArrayList<Schedule> liste = new ArrayList<Schedule>();
                     for (Schedule s : scheduleList) {
                         if (s.getPeriod().getPeriod().equals(period)) {
-                            liste.add(s);
+                            if (s.getLineStation().getDirection().equals(direction)) {
+                                liste.add(s);
+                            }
                         }
                     }
                     return liste;

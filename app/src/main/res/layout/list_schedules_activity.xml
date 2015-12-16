@@ -8,20 +8,52 @@
 
     <TextView
         android:id="@+id/tv_period"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/periode"
         android:layout_marginLeft="20dp"/>
 
+    <TextView
+        android:id="@+id/tv_ligne_direction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ligne_direction"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/tv_period"
+        android:gravity="right"/>
+
     <RadioGroup
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radio_group_period"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:checkedButton="@+id/radio_button_aller"
         android:layout_below="@id/tv_period">
     </RadioGroup>
+
+
+    <RadioGroup
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/radio_group_direction_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:checkedButton="@+id/radio_button_aller_2"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_ligne_direction">
+
+        <RadioButton android:id="@id/radio_button_aller_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"/>
+
+        <RadioButton android:id="@+id/radio_button_retour_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+        />
+    </RadioGroup>
+
 
     <TextView
         android:id="@+id/tv_schedules"

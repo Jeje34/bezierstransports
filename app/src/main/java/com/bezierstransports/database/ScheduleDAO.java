@@ -25,8 +25,6 @@ public class ScheduleDAO {
     private DatabaseHandler dh;
 
 
-
-
     private ScheduleDAO(Context context){
         dh = new DatabaseHandler(context);
     }
@@ -42,6 +40,7 @@ public class ScheduleDAO {
         }
         return ScheduleDAO.scheduleDAO;
     }
+
 
     public void addSchedule(Schedule schedule)  {
         SQLiteDatabase db = this.dh.getWritableDatabase();
@@ -63,6 +62,7 @@ public class ScheduleDAO {
         db.insert(DatabaseHandler.TABLE_SCHEDULE, null, values);
         db.close();
     }
+
 
     public List<Schedule> get3NextDepartures(LineStation ls) {
         SQLiteDatabase db = this.dh.getReadableDatabase();
@@ -117,6 +117,7 @@ public class ScheduleDAO {
     }
 
 
+    // get all schedules from LineStation whatever the direction
     public List<Schedule> getSchedules(LineStation ls) {
         SQLiteDatabase db = this.dh.getReadableDatabase();
         List<Schedule> schedulesList = new ArrayList<Schedule>();
@@ -124,10 +125,8 @@ public class ScheduleDAO {
         Cursor cursor = db.query(DatabaseHandler.TABLE_SCHEDULE,
                 new String[]{DatabaseHandler.KEY_LINENUMBER, DatabaseHandler.KEY_IDSTATION,
                         DatabaseHandler.KEY_IDPERIOD, DatabaseHandler.KEY_DIRECTION, DatabaseHandler.KEY_SCHEDULE},
-                DatabaseHandler.KEY_LINENUMBER + "= ? AND " + DatabaseHandler.KEY_IDSTATION + " = ? AND " +
-                        DatabaseHandler.KEY_DIRECTION + " = ?",
-                new String[]{ls.getLine().getLineNumber(), String.valueOf(ls.getStation().getId()),
-                        ls.getDirection()}
+                DatabaseHandler.KEY_LINENUMBER + "= ? AND " + DatabaseHandler.KEY_IDSTATION + " = ?",
+                new String[]{ls.getLine().getLineNumber(), String.valueOf(ls.getStation().getId())}
                 , null, null, null, null);
 
         if (cursor.moveToFirst()) {
