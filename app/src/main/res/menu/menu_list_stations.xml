@@ -9,4 +9,14 @@
         android:icon="@drawable/ic_menu_upload"
         android:title="@string/upload_schedules"
         app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/action_map"
+        android:icon="@drawable/ic_menu_mapmode"
+        android:title="@string/map"
+        app:showAsAction="ifRoom" />
+
 </menu>
+
+

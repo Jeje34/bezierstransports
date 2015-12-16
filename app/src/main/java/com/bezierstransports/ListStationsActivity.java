@@ -96,6 +96,7 @@ public class ListStationsActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -103,15 +104,21 @@ public class ListStationsActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_upload_schedules:
-
+            case R.id.action_map:
+                Intent i = new Intent(ListStationsActivity.this, LineMapActivity.class);
+                startActivity(i);
+                finish();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     private void getData (final String direction) {
         new AsyncTask<Void, Void, List<LineStation>>() {
@@ -139,6 +146,7 @@ public class ListStationsActivity extends AppCompatActivity {
         }.execute();
     }
 
+
     // long click on item LineStation launches activity that list all schedules of the LineStation
     private ExpandableListView.OnItemLongClickListener groupLongClickListener = new ExpandableListView.OnItemLongClickListener() {
 
@@ -148,7 +156,8 @@ public class ListStationsActivity extends AppCompatActivity {
 
             // handle only long click on group item
             if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                onGroupLongClick(position);
+                long groupPosition = expandableListView.getPackedPositionGroup(id);
+                onGroupLongClick(groupPosition);
                 return true;
             } else {
                 // do nothing if long click on child item

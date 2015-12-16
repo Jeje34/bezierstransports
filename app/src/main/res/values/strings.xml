@@ -17,4 +17,6 @@
     <string name="horaires">Horaires</string>
     <string name="lundiASamedi">Lundi à samedi</string>
     <string name="dimanche">Dimanche</string>
+    <string name="title_activity_line_map">LineMapActivity</string>
+    <string name="map">Consulter la carte</string>
 </resources>

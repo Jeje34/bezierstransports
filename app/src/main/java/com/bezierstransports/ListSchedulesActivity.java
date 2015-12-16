@@ -67,6 +67,14 @@ public class ListSchedulesActivity extends AppCompatActivity {
 
         radioButtonAller.setOnClickListener(radioButtonAllerListener);
         radioButtonRetour.setOnClickListener(radioButtonRetourListener);
+        if (lineStation.getDirection().equals("A")) {
+            radioButtonAller.setChecked(true);
+            radioButtonAller.performClick();
+        }
+        else if (lineStation.getDirection().equals("R")) {
+            radioButtonRetour.setChecked(true);
+            radioButtonRetour.performClick();
+        }
     }
 
     @Override

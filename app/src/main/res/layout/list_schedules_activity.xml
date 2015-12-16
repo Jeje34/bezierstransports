@@ -38,11 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:checkedButton="@+id/radio_button_aller_2"
         android:layout_alignParentRight="true"
         android:layout_below="@id/tv_ligne_direction">
 
-        <RadioButton android:id="@id/radio_button_aller_2"
+        <RadioButton android:id="@+id/radio_button_aller_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRadioButtonClicked"/>
