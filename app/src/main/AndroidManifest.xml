@@ -16,8 +16,8 @@
     <application
         android:name=".BeziersTransports"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:icon="@drawable/logo_beziers_transports"
+        android:label= "@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
@@ -26,7 +26,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
