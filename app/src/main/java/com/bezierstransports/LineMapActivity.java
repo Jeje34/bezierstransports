@@ -1,114 +1,154 @@
 package com.bezierstransports;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.AvoidType;
+import com.akexorcist.googledirection.constant.Language;
+import com.akexorcist.googledirection.constant.Unit;
+import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Leg;
+import com.akexorcist.googledirection.model.Route;
+import com.akexorcist.googledirection.util.DirectionConverter;
 import com.bezierstransports.database.StationDAO;
 import com.bezierstransports.model.Line;
 import com.bezierstransports.model.Station;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
-public class LineMapActivity extends FragmentActivity {
+public class LineMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Line line;
     private ArrayList<Marker> markers = new ArrayList<>();
+
+    private GoogleMap map;
+    private LocationManager mLocationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.line_map_activity);
 
-
         // get the object line from the last activity
         Intent i = getIntent();
         line = (Line) i.getParcelableExtra("line");
         line.setStations(StationDAO.getStationDAO().getStations(line));
 
-        setUpMapIfNeeded();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 1.0f, mLocationListener);
+        }
+
+        // map
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            drawDirection(location);
+        }
+
+        public void onStatusChanged (String provider, int status, Bundle extras) {  }
+        public void onProviderEnabled (String provider) { }
+        public void onProviderDisabled (String provider) {}
+    };
+
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
+    public void onMapReady(final GoogleMap retMap) {
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (mMap != null) {
-                setUpMap();
-            }
-        }
-    }
+        this.map = retMap;
 
-    /**
-     * This is where we can add markers or lines, add listeners or move the camera.
-     * This should only be called once and when we are sure that {@link #mMap} is not null.
-     */
-    private void setUpMap() {
+        /* add markers for each station of the line on the map
+        and save marker in a list */
         for (Station station : line.getStations()) {
-
-            /* add markers for each station of the line on the map
-            and save marker in a list */
-            markers.add(mMap.addMarker(new MarkerOptions()
+            markers.add(map.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
                     .title(station.getStationName())));
-
-            // zoom and move camera to see all the markers
-            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-
-                public void onMapLoaded() {
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for (Marker marker : markers) {
-                        builder.include(marker.getPosition());
-                    }
-                    LatLngBounds bounds = builder.build();
-                    int padding = 0;
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                    mMap.moveCamera(cu);
-                }
-            });
         }
 
-        drawLine();
+        // zoom and move camera to see all the markers
+        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            public void onMapLoaded() {
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (Marker marker : markers) {
+                    builder.include(marker.getPosition());
+                }
+                LatLngBounds bounds = builder.build();
+                int padding = 0;
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                map.moveCamera(cu);
+            }
+        });
+
+        // draw the lines on the map
+        drawLine1();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            map.setMyLocationEnabled(true);
+        }
+
     }
 
-    private void drawLine() {
+
+    private void drawDirection(Location current) {
+        GoogleDirection.withServerKey("AIzaSyDkjdEZ74pmQFy5D3F6-YKE84KChZtAt6Y")
+            .from(new LatLng(current.getLatitude(), current.getLongitude()))
+            .to(new LatLng(line.getStations().get(0).getLatitude(),
+                    line.getStations().get(0).getLongitude()))
+                .unit(Unit.METRIC)
+                .language(Language.FRENCH)
+                .avoid(AvoidType.FERRIES)
+                .avoid(AvoidType.HIGHWAYS)
+                .execute(new DirectionCallback() {
+                    public void onDirectionSuccess(Direction direction) {
+                        if (direction.isOK()) {
+                            Route route = direction.getRouteList().get(0);
+                            Leg leg = route.getLegList().get(0);
+                            ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
+                            PolylineOptions polylineOptions = DirectionConverter.createPolyline(BeziersTransports.getAppContext(),
+                                    directionPositionList, 5, Color.RED);
+                            map.addPolyline(polylineOptions);
+
+                        } else {
+                            // Do something
+                        }
+                    }
+
+                    public void onDirectionFailure(Throwable t) {
+                        // Do something
+                    }
+            });
+    }
+
+
+    private void drawLine1() {
         PolylineOptions rectOptions = new PolylineOptions()
                 .add(new LatLng(43.34576, 3.217365))
                 .add(new LatLng(43.345954, 3.216877))
@@ -144,8 +184,6 @@ public class LineMapActivity extends FragmentActivity {
                 .color(Color.BLUE)
                 .geodesic(true);
 
-        Polyline polyline = mMap.addPolyline(rectOptions);
-
-
+        map.addPolyline(rectOptions);
     }
 }

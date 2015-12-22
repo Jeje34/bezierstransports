@@ -55,8 +55,8 @@ public class ListLinesActivity extends AppCompatActivity implements AdapterView.
             protected List<Line> doInBackground(Void... params) {
 
                 // call webservice to get the lines list
-                //WebService webService = new WebService(BeziersTransports.getAppContext());
-                //webService.getLinesAndWriteInDatabase();
+                WebService webService = new WebService(BeziersTransports.getAppContext());
+                webService.getLinesAndWriteInDatabase();
 
                 List<Line> liste = LineDAO.getLineDAO().getLines();
                 if (liste != null) {

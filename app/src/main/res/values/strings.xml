@@ -19,4 +19,5 @@
     <string name="dimanche">Dimanche</string>
     <string name="title_activity_line_map">LineMapActivity</string>
     <string name="map">Consulter la carte</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
