@@ -13,6 +13,12 @@ public class Schedule {
 
     public Schedule() {    }
 
+    public Schedule(LineStation lineStation, Period period, Date schedule) {
+        this.lineStation = lineStation;
+        this.period = period;
+        this.schedule = schedule;
+    }
+
     public Period getPeriod() {
         return period;
     }

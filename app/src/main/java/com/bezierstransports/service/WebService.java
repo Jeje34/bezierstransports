@@ -11,6 +11,7 @@ import com.bezierstransports.database.ScheduleDAO;
 import com.bezierstransports.database.StationDAO;
 import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
+import com.bezierstransports.model.Period;
 import com.bezierstransports.model.Schedule;
 import com.bezierstransports.model.Station;
 import com.google.gson.Gson;
@@ -20,12 +21,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.util.Date;
 import java.util.List;
 
 
 public class WebService {
 
-    private final String URL = "http://www.petit-fichier.fr/2015/12/16/bezierstransports/bezierstransports.json";
+    //private final String URL = "http://www.petit-fichier.fr/2015/12/16/bezierstransports/bezierstransports.json";
+    private final String URL = "http://www.petit-fichier.fr/2015/12/22/bezierstransports-3/bezierstransports.json";
     Gson gson;
 
 
@@ -67,8 +70,10 @@ public class WebService {
                 // delete the database
                 BeziersTransports.getAppContext().deleteDatabase(DatabaseHandler.DATABASE_NAME);
                 // write all objects in database
-                for (Schedule h : response.schedules) {
-                    ScheduleDAO.getScheduleDAO().addSchedule(h);
+                for (ScheduleTemp st : response.schedulesArray) {
+                    for (Date s : st.schedules) {
+                        ScheduleDAO.getScheduleDAO().addSchedule(new Schedule(st.lineStation, st.period, s));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -77,14 +82,14 @@ public class WebService {
         }
     }
 
-
     private class Response {
-        /*
-        @SerializedName("lines") public List<Line> mLines;
-        @SerializedName("stations") public List<Station> mStations;
-        @SerializedName("linesStations") public List<LineStation> mLinesStations;
-        */
-        public List<Schedule> schedules;
+        public List<ScheduleTemp> schedulesArray;
+    }
+
+    private class ScheduleTemp {
+        private LineStation lineStation;
+        private Period period;
+        protected Date[] schedules;
     }
 
 }
