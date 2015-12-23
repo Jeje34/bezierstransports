@@ -2,6 +2,9 @@ package com.bezierstransports;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +35,38 @@ public class BeziersTransports extends Application {
     private static Date day;
 
 
+    private SensorManager mSensorManager;
+    private ShakeEventListener mSensorListener;
+
 
     public void onCreate(){
         super.onCreate();
         BeziersTransports.context = getApplicationContext();
         BeziersTransports.scheduleFormat = new SimpleDateFormat("HH:mm");
         BeziersTransports.updateTime();
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorListener = new ShakeEventListener();
+        mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+            public void onShake() {
+                // shake => close application
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
     }
+
+    public void onTerminate() {
+        super.onTerminate();
+        mSensorManager.unregisterListener(mSensorListener);
+    }
+
 
     public static void updateTime() {
         BeziersTransports.now = new Date();

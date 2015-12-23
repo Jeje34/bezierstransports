@@ -61,9 +61,7 @@ public class ListLinesActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list_lines, menu);
