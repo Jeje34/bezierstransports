@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.Period;
-import com.bezierstransports.model.Station;
 
 /**
  * Created by Jérémy Pastor on 11/11/2015.

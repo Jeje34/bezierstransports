@@ -1,4 +1,4 @@
-package com.bezierstransports;
+package com.bezierstransports.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,10 +7,9 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -21,6 +20,8 @@ import com.akexorcist.googledirection.model.Direction;
 import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.bezierstransports.BeziersTransports;
+import com.bezierstransports.R;
 import com.bezierstransports.database.StationDAO;
 import com.bezierstransports.model.Line;
 import com.bezierstransports.model.Station;

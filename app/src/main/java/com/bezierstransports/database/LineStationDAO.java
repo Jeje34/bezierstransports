@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.Line;
@@ -12,7 +11,6 @@ import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Station;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jérémy Pastor on 10/11/2015.

@@ -1,4 +1,4 @@
-package com.bezierstransports.adapter;
+package com.bezierstransports.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bezierstransports.BeziersTransports;
-import com.bezierstransports.model.Line;
 import com.bezierstransports.model.Schedule;
 
 import java.util.List;

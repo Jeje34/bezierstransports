@@ -1,10 +1,9 @@
-package com.bezierstransports;
+package com.bezierstransports.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,9 @@ import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.bezierstransports.adapter.AdapterStationSchedule;
+import com.bezierstransports.BeziersTransports;
+import com.bezierstransports.R;
+import com.bezierstransports.adapters.AdapterStationSchedule;
 import com.bezierstransports.database.LineStationDAO;
 import com.bezierstransports.database.ScheduleDAO;
 import com.bezierstransports.model.Line;

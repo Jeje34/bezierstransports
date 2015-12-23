@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.City;
-import com.bezierstransports.model.Line;
 
 /**
  * Created by Jérémy Pastor on 11/11/2015.

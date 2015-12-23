@@ -5,29 +5,23 @@ import android.util.Log;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.database.DatabaseHandler;
-import com.bezierstransports.database.LineDAO;
-import com.bezierstransports.database.LineStationDAO;
 import com.bezierstransports.database.ScheduleDAO;
-import com.bezierstransports.database.StationDAO;
-import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Period;
 import com.bezierstransports.model.Schedule;
-import com.bezierstransports.model.Station;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
 
 public class WebService {
 
-    //private final String URL = "http://www.petit-fichier.fr/2015/12/16/bezierstransports/bezierstransports.json";
     private final String URL = "http://www.petit-fichier.fr/2015/12/22/bezierstransports-3/bezierstransports.json";
     Gson gson;
 

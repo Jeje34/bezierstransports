@@ -10,6 +10,8 @@ import java.util.Date;
 /**
  * Created by Jérémy Pastor on 12/11/2015.
  */
+
+// CLASS APPLICATION
 public class BeziersTransports extends Application {
 
     // BeziersTransports.getAppContext() to get application context statically every where

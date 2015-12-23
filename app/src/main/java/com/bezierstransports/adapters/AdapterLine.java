@@ -1,4 +1,4 @@
-package com.bezierstransports.adapter;
+package com.bezierstransports.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

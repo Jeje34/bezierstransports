@@ -1,12 +1,7 @@
-package com.bezierstransports.adapter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package com.bezierstransports.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +13,9 @@ import com.bezierstransports.R;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Schedule;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AdapterStationSchedule extends BaseExpandableListAdapter {
 
