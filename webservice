@@ -1,0 +1,518 @@
+package com.bezierstransports.servlets;
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.bezierstransports.beans.BeziersTransports;
+import com.bezierstransports.beans.City;
+import com.bezierstransports.beans.Line;
+import com.bezierstransports.beans.LineStation;
+import com.bezierstransports.beans.Period;
+import com.bezierstransports.beans.Schedule;
+import com.bezierstransports.beans.Station;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+
+public class Servlet extends HttpServlet {
+
+	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+		
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+		BeziersTransports b = new BeziersTransports();
+		
+		/* CITIES */
+		City beziers = new City(1, "Béziers");
+		City vlb = new City(2, "Villeneuve-lès-Béziers");
+		City cers = new City(3, "Cers");
+		
+		/* PERIODS */
+		Period ls = new Period(1, "LS", "Hiver");
+		Period d = new Period(2, "D", "Hiver");
+		Period lv = new Period(3, "LV", "Hiver");
+		
+		/* LINES */
+		Line l1 = new Line("1","De Gaulle - Les Grands Hommes");
+		Line l2 = new Line("2","De Gaulle - La Courondelle");
+		Line l2E = new Line("2E","De Gaulle - Boujan/Libron");
+		Line l3 = new Line("3","SNCF - La Ginieisse");
+		Line l4 = new Line("4","De Gaulle - Mousquetaires");
+		Line l5 = new Line("5","De Gaulle - CC Montimaran");
+		Line l6 = new Line("6","De Gaulle - Capiscol Ouest");
+		Line l7 = new Line("7","De Gaulle - Lycée Jean Moulin");
+		Line l8 = new Line("8","De Gaulle - Avenue de la Devèze");
+		Line l9 = new Line("9","De Gaulle - Les 9 Ecluses");
+		Line l10 = new Line("10","De Gaulle - Capiscol Est");
+		Line l11 = new Line("11","De Gaulle - Marcel Pagnol");
+		Line l12 = new Line("12","De Gaulle - Les Oiseaux");
+		Line l13 = new Line("13","De Gaulle - Gasquinoy");
+		Line l14A = new Line("14A","De Gaulle - Bonaval Haut");
+		Line l14B = new Line("14B","De Gaulle - Bonaval");
+		Line l15 = new Line("15","De Gaulle - Villeneuve - Cers");
+		Line l16 = new Line("16","De Gaulle - Sauvian - Valras");
+		Line l17 = new Line("17","De Gaulle - PA La Baume");
+		Line l18 = new Line("18","De Gaulle - SNCF - Capiscol Est");
+		Line l19 = new Line("19","De Gaulle - Lignan/Orb - Corneilhan");
+		Line l20 = new Line("20","De Gaulle - Lignan/Orb - Lieuran - Espondeilhan");
+		Line l21 = new Line("21","De Gaulle - Bassan - Servian");
+		Line l23 = new Line("23","De Gaulle - Zatopek");
+		
+		/* STATIONS */		
+		Station deGaulle = new Station(1, "De Gaulle", 43.345759f, 3.217365f, beziers);
+		Station clemenceau = new Station(2, "Clémenceau", 43.348474f, 3.220128f, beziers);
+		Station jussieu = new Station(3, "Jussieu", 43.352514f, 3.220945f, beziers);
+		Station magnelli = new Station(4, "Magnelli", 43.359852f, 3.225895f, beziers);
+		Station dahlias = new Station(5, "Dahlias", 43.355705f, 3.226299f, beziers);
+		Station morisot = new Station(6, "Morisot", 43.355378f, 3.226813f, beziers);
+		Station laurencin = new Station(7, "Laurencin", 43.359355f, 3.229490f, beziers);
+		Station renoir = new Station(8, "Renoir", 43.359365f, 3.234486f, beziers);
+		Station grandsHommes = new Station(9, "Grands Hommes", 43.362602f, 3.231993f, beziers);
+		Station pompiers = new Station(10, "Pompiers", 43.351317f, 3.219821f, beziers);
+		Station gareDuNord = new Station(11, "Gare du Nord", 0.0f, 0.0f, beziers);
+		Station bassins = new Station(12, "Bassins", 0.0f, 0.0f, beziers);
+		Station seurat = new Station(13, "Seurat", 0.0f, 0.0f, beziers);
+		Station citeMunicipale = new Station(14, "Cité Municipale", 0.0f, 0.0f, beziers);
+		Station hemingway = new Station(15, "Hemingway", 0.0f, 0.0f, beziers);
+		Station courondelle = new Station(16, "Courondelle", 0.0f, 0.0f, beziers);
+		Station avenueDoc = new Station(17, "Avenue d'Oc", 0.0f, 0.0f, beziers);
+		Station cooperativeBeziers = new Station(18, "Cave Coopérative", 0.0f, 0.0f, beziers);
+		Station hotelDuDepartement = new Station(19, "Hôtel du Département", 0.0f, 0.0f, beziers);
+		Station robert = new Station(20, "Robert", 0.0f, 0.0f, beziers);
+		Station cohl = new Station(21, "Cohl", 0.0f, 0.0f, beziers);
+		Station laDaubinelle = new Station(22, "La Daubinelle", 0.0f, 0.0f, beziers);
+		Station myosotis = new Station(23, "Myosotis", 0.0f, 0.0f, beziers);
+		Station cureDArs = new Station(24, "Curé d'Ars", 0.0f, 0.0f, beziers);
+		Station utrillo = new Station(25, "Utrillo", 0.0f, 0.0f, beziers);		
+		Station puel = new Station(26, "Puel", 0.0f, 0.0f, beziers);
+		Station liberte = new Station(27, "Liberté", 0.0f, 0.0f, beziers);
+		Station victorHugo = new Station(28, "Victor Hugo", 0.0f, 0.0f, beziers);
+		Station gagarine = new Station(29, "Gagarine", 0.0f, 0.0f, beziers);
+		Station manet = new Station(30, "Manet", 0.0f, 0.0f, beziers);
+		Station croixDePoumeyrac = new Station(31, "Croix de Poumeyrac", 0.0f, 0.0f, beziers);
+		
+		Station pontAutoroute = new Station(201, "Pont Autoroute", 0.0f, 0.0f, vlb);
+		Station cimetiere = new Station(202, "Cimetière", 0.0f, 0.0f, vlb);
+		Station centre = new Station(203, "Centre", 0.0f, 0.0f, vlb);
+		Station poleMediterranee = new Station(204, "Pôle Méditerranée", 0.0f, 0.0f, vlb);
+		
+		Station saintPrivat = new Station(251, "Saint Privat", 0.0f, 0.0f, cers);
+		Station cooperativeCers = new Station(252, "Cave Coopérative", 0.0f, 0.0f, cers);
+
+		
+		// LIGNE 1 - ALLER		
+		LineStation ls1a1 = new LineStation(l1, deGaulle, "A", 1);
+		LineStation ls1a2 = new LineStation(l1, clemenceau, "A", 2);
+		LineStation ls1a3 = new LineStation(l1, pompiers, "A", 3);
+		LineStation ls1a4 = new LineStation(l1, jussieu, "A", 4);
+		LineStation ls1a5 = new LineStation(l1, hotelDuDepartement, "A", 5);
+		LineStation ls1a6 = new LineStation(l1, robert, "A", 6);
+		LineStation ls1a7 = new LineStation(l1, cohl, "A", 7);
+		LineStation ls1a8 = new LineStation(l1, magnelli, "A", 8);		
+		LineStation ls1a9 = new LineStation(l1, laDaubinelle, "A", 9);
+		LineStation ls1a10 = new LineStation(l1, myosotis, "A", 10);
+		LineStation ls1a11 = new LineStation(l1, dahlias, "A", 11);		
+		LineStation ls1a12 = new LineStation(l1, morisot, "A", 12);		
+		LineStation ls1a13 = new LineStation(l1, cureDArs, "A", 13);
+		LineStation ls1a14 = new LineStation(l1, utrillo, "A", 14);		
+		LineStation ls1a15 = new LineStation(l1, laurencin, "A", 15);		
+		LineStation ls1a16 = new LineStation(l1, manet, "A", 16);
+		LineStation ls1a17 = new LineStation(l1, croixDePoumeyrac, "A", 17);		
+		LineStation ls1a18 = new LineStation(l1, renoir, "A", 18);
+		LineStation ls1a19 = new LineStation(l1, hemingway, "A", 19);
+		LineStation ls1a20 = new LineStation(l1, grandsHommes, "A", 20);
+		
+		// LIGNE 1 - RETOUR
+		LineStation ls1r1 = new LineStation(l1, grandsHommes, "R", 1);
+		LineStation ls1r2 = new LineStation(l1, renoir, "R", 2);
+		LineStation ls1r3 = new LineStation(l1, laurencin, "R", 3);
+		LineStation ls1r4 = new LineStation(l1, dahlias, "R", 4);
+		LineStation ls1r5 = new LineStation(l1, magnelli, "R", 5);
+		LineStation ls1r6 = new LineStation(l1, jussieu, "R", 6);
+		LineStation ls1r7 = new LineStation(l1, pompiers, "R", 7);
+		LineStation ls1r8 = new LineStation(l1, clemenceau, "R", 8);
+		LineStation ls1r9 = new LineStation(l1, deGaulle, "R", 9);
+		
+		// LIGNE 2 - ALLER
+		LineStation ls2a1 = new LineStation(l2, deGaulle, "A", 1);
+		LineStation ls2a2 = new LineStation(l2, clemenceau, "A", 2);
+		LineStation ls2a3 = new LineStation(l2, gareDuNord, "A", 3);
+		LineStation ls2a4 = new LineStation(l2, bassins, "A", 4);
+		LineStation ls2a5 = new LineStation(l2, seurat, "A", 5);
+		LineStation ls2a6 = new LineStation(l2, citeMunicipale, "A", 6);
+		LineStation ls2a7 = new LineStation(l2, hemingway, "A", 7);
+		LineStation ls2a8 = new LineStation(l2, grandsHommes, "A", 8);
+		LineStation ls2a9 = new LineStation(l2, courondelle, "A", 9);
+		
+		// LIGNE 2 - RETOUR
+		LineStation ls2r1 = new LineStation(l2, courondelle, "R", 1);
+		LineStation ls2r2 = new LineStation(l2, grandsHommes, "R", 2);
+		LineStation ls2r3 = new LineStation(l2, hemingway, "R", 3);
+		LineStation ls2r4 = new LineStation(l2, citeMunicipale, "R", 4);
+		LineStation ls2r5 = new LineStation(l2, seurat, "R", 5);
+		LineStation ls2r6 = new LineStation(l2, avenueDoc, "R", 6);
+		LineStation ls2r7 = new LineStation(l2, cooperativeBeziers, "R", 7);
+		LineStation ls2r8 = new LineStation(l2, clemenceau, "R", 8);
+		LineStation ls2r9 = new LineStation(l2, deGaulle, "R", 9);
+				
+		
+		// LIGNE 15 - ALLER
+		LineStation ls15a1 = new LineStation(l15, deGaulle, "A", 1);
+		LineStation ls15a2 = new LineStation(l15, puel, "A", 2);
+		LineStation ls15a3 = new LineStation(l15, liberte, "A", 3);
+		LineStation ls15a4 = new LineStation(l15, victorHugo, "A", 4);
+		LineStation ls15a5 = new LineStation(l15, gagarine, "A", 5);
+		LineStation ls15a6 = new LineStation(l15, pontAutoroute, "A", 6);
+		LineStation ls15a7 = new LineStation(l15, cimetiere, "A", 7);
+		LineStation ls15a8 = new LineStation(l15, centre, "A", 8);
+		LineStation ls15a9 = new LineStation(l15, cimetiere, "A", 9);
+		LineStation ls15a10 = new LineStation(l15, poleMediterranee, "A", 10);
+		LineStation ls15a11 = new LineStation(l15, saintPrivat, "A", 11);
+		LineStation ls15a12 = new LineStation(l15, cooperativeCers, "A", 12);
+		
+		// LIGNE 15 - RETOUR
+		LineStation ls15r1 = new LineStation(l15, cooperativeCers, "R", 1);
+		LineStation ls15r2 = new LineStation(l15, saintPrivat, "R", 2);
+		LineStation ls15r3 = new LineStation(l15, poleMediterranee, "R", 3);
+		LineStation ls15r4 = new LineStation(l15, cimetiere, "R", 4);
+		LineStation ls15r5 = new LineStation(l15, centre, "R", 5);
+		LineStation ls15r6 = new LineStation(l15, cimetiere, "R", 6);
+		LineStation ls15r7 = new LineStation(l15, pontAutoroute, "R", 7);
+		LineStation ls15r8 = new LineStation(l15, gagarine, "R", 8);
+		LineStation ls15r9 = new LineStation(l15, victorHugo, "R", 9);
+		LineStation ls15r10 = new LineStation(l15, liberte, "R", 10);
+		LineStation ls15r11 = new LineStation(l15, puel, "R", 11);
+		LineStation ls15r12 = new LineStation(l15, deGaulle, "R", 12);
+		
+
+		
+		Schedule[] array = new Schedule[] {
+				
+				
+			/******************************************************************************************************
+			/******************************************LIGNE 1*****************************************************
+			/*****************************************************************************************************/
+					
+			// HORAIRES LIGNE 1 - STATION 1 - ALLER	- LS
+			new Schedule(ls1a1, ls, new String[]{"06:55", "07:30", "08:10", "08:50", "09:30", "10:10", "10:50", "11:30",
+				"12:10", "12:50", "13:30", "14:10",  "14:50", "15:30", "16:10", "16:50", "17:30", "18:10", "18:50",
+				"19:30"}),
+					
+			// HORAIRES LIGNE 1 - STATION 1 - ALLER	- D
+			new Schedule(ls1a1, d, new String[]{"09:25", "10:50", "13:30", "14:55", "16:20", "17:45"}),
+											
+			// HORAIRES LIGNE 1 - STATION 2 - ALLER	- LS
+			new Schedule(ls1a2, ls, new String[]{"06:56", "07:31", "08:11", "08:51", "09:31", "10:11",
+				"10:51", "11:31", "12:11", "12:51", "13:31", "14:11", "14:51", "15:31", "16:11",
+				"16:51", "17:31", "18:11", "18:51", "19:31"}),
+			
+			// HORAIRES LIGNE 1 - STATION 2 - ALLER	- D
+			new Schedule(ls1a2, d,  new String[]{"09:26", "10:51", "13:31", "14:56", "16:21", "17:46"}),
+			
+			// HORAIRES LIGNE 1 - STATION 3 - ALLER	- LS
+			new Schedule(ls1a4, ls, new String[]{ "06:58", "07:33", "08:13", "08:53", "09:33",
+				"10:13", "10:53", "11:33", "12:13", "12:53", "13:33", "14:13", "14:53", "15:33",
+				"16:13", "16:53", "17:33", "18:13", "18:53", "19:33"}),
+					
+			// HORAIRES LIGNE 1 - STATION 3 - ALLER	- D
+			new Schedule(ls1a4, d, new String[]{"09:27", "10:52", "13:32", "14:57", "16:22", "17:47"}),
+			
+			// HORAIRES LIGNE 1 - STATION 4 - ALLER	- LS
+			new Schedule(ls1a8, ls, new String[]{ "07:01", "07:36" , "08:16", "08:56", "09:36", "10:16",
+				"10:56", "11:36", "12:16", "12:56", "13:36", "14:16", "14:56", "15:36", "16:16", "16:56",
+				"17:36", "18:16", "18:56", "19:36"}),
+					
+			// HORAIRES LIGNE 1 - STATION 4 - ALLER	- D
+			new Schedule(ls1a8, d, new String[]{"09:30", "10:55", "13:35", "15:00", "16:25", "17:50"}),
+			
+			// HORAIRES LIGNE 1 - STATION 5 - ALLER	- LS
+			new Schedule(ls1a11, ls, new String[]{"07:04", "07:39", "08:19", "08:59", "09:39", "10:19", "10:59",
+				"11:39", "12:19", "12:59", "13:39", "14:19", "14:59", "15:39", "16:19", "16:59", "17:39",
+				"18:19", "18:59", "19:39"}),
+					
+			// HORAIRES LIGNE 1 - STATION 5 - ALLER	- D
+			new Schedule(ls1a11, d, new String[]{ "09:32", "10:57", "13:37", "15:02", "16:27", "17:52"}),
+			
+			// HORAIRES LIGNE 1 - STATION 6 - ALLER	- LS
+			new Schedule(ls1a12, ls, new String[]{ "07:04", "07:39", "08:19", "08:59", "09:39", "10:19", "10:59",
+				"11:39", "12:19", "12:59", "13:39", "14:19", "14:59", "15:39", "16:19", "16:59", "17:39", "18:19",
+				"18:59", "19:39"}),
+					
+			// HORAIRES LIGNE 1 - STATION 6 - ALLER	- D
+			new Schedule(ls1a12, d, new String[]{"09:32", "10:57", "13:37", "15:02", "16:27", "17:52"}),
+			
+			// HORAIRES LIGNE 1 - STATION 7 - ALLER	- LS
+			new Schedule(ls1a15, ls, new String[]{"07:06", "07:41", "08:21", "09:01", "09:41", "10:21", "11:01",
+				"11:41", "12:21", "13:01", "13:41", "14:21", "15:01", "15:41", "16:21", "17:01", "17:41",
+				"18:21", "19:01", "19:41"}),
+					
+			// HORAIRES LIGNE 1 - STATION 7 - ALLER	- D
+			new Schedule(ls1a15, d, new String[]{"09:33", "10:58", "13:38", "15:03", "16:28", "17:53"}),
+			
+			// HORAIRES LIGNE 1 - STATION 8 - ALLER	- LS
+			new Schedule(ls1a18, ls, new String[]{"07:08", "07:43", "08:23", "09:03", "09:43", "10:23", "11:03",
+				"11:43", "12:23", "13:03", "13:43", "14:23", "15:03", "15:43", "16:23", "17:03", "17:43",
+				"18:23", "19:03", "19:43"}),
+					
+			// HORAIRES LIGNE 1 - STATION 8 - ALLER	- D
+			new Schedule(ls1a18, d, new String[]{"09:35", "11:00", "13:40", "15:05", "16:30", "17:55"}),
+			
+			// HORAIRES LIGNE 1 - STATION 9 - ALLER	- LS
+			new Schedule(ls1a20, ls, new String[]{"07:11", "07:46", "08:26", "09:06", "09:46", "10:26",
+				"11:06", "11:46", "12:26", "13:06", "13:46", "14:26", "15:06", "15:46", "16:26",
+				"17:06", "17:46", "18:26", "19:06", "19:46"}),
+					
+			// HORAIRES LIGNE 1 - STATION 9 - ALLER	- D
+			new Schedule(ls1a20, d, new String[]{"09:37", "11:02", "13:42", "15:07", "16:32", "17:57"}),
+			
+			// HORAIRES LIGNE 1 - STATION 1 - RETOUR - LS
+			new Schedule(ls1r1, ls, new String[]{"07:11", "07:46", "08:26", "09:06", "09:46", "10:26",
+				"11:06", "11:46", "12:26", "13:06", "13:46", "14:26", "15:06", "15:46", "16:26", "17:06",
+				"17:46", "18:26", "19:06"}),
+				
+			// HORAIRES LIGNE 1 - STATION 1 - RETOUR - D
+			new Schedule(ls1r1, d, new String[]{"09:37", "11:02", "13:42", "15:07", "16:32", "17:57"}),
+			
+			// HORAIRES LIGNE 1 - STATION 2 - RETOUR - LS
+			new Schedule(ls1r2, ls, new String[]{"07:13", "07:48", "08:28", "09:08", "09:48", "10:28",
+				"11:08", "11:48", "12:28", "13:08", "13:48", "14:28", "15:08", "15:48", "16:28", "17:08",
+				"17:48", "18:28", "19:08"}),
+				
+			// HORAIRES LIGNE 1 - STATION 2 - RETOUR - D
+			new Schedule(ls1r2, d, new String[]{"09:38", "11:03", "13:43", "15:08", "16:33", "17:58"}),
+			
+			// HORAIRES LIGNE 1 - STATION 3 - RETOUR - LS
+			new Schedule(ls1r3, ls, new String[]{"07:15", "07:50", "08:30", "09:10", "09:50", "10:30",
+				"11:10", "11:50", "12:30", "13:10", "13:50", "14:30", "15:10", "15:50", "16:30", "17:10",
+				"17:50", "18:30", "19:10"}),
+					
+			// HORAIRES LIGNE 1 - STATION 3 - RETOUR - D
+			new Schedule(ls1r3, d, new String[]{"09:39", "11:04", "13:44", "15:09", "16:34", "17:59"}),
+			
+			// HORAIRES LIGNE 1 - STATION 4 - RETOUR - LS
+			new Schedule(ls1r4, ls, new String[]{"07:17", "07:52", "08:32", "09:12", "09:52", "10:32",
+				"11:12", "11:52", "12:32", "13:12", "13:52", "14:32", "15:12", "15:52", "16:32",
+				"17:12", "17:52", "18:32", "19:12"}),
+					
+			// HORAIRES LIGNE 1 - STATION 4 - RETOUR - D
+			new Schedule(ls1r4, d, new String[]{"09:41", "11:06", "13:46", "15:11", "16:36", "18:01"}),
+			
+			// HORAIRES LIGNE 1 - STATION 5 - RETOUR - LS
+			new Schedule(ls1r5, ls, new String[]{ "07:19", "07:54", "08:34", "09:14", "09:54", "10:34", "11:14",
+				"11:54", "12:34", "13:14", "13:54", "14:34", "15:14", "15:54", "16:34", "17:14", "17:54",
+				"18:34", "19:14"}),
+				
+			// HORAIRES LIGNE 1 - STATION 5 - RETOUR - D
+			new Schedule(ls1r5, d, new String[]{"09:42", "11:07", "13:47", "15:12", "16:37", "18:02"}),
+			
+			// HORAIRES LIGNE 1 - STATION 6 - RETOUR - LS
+			new Schedule(ls1r6, ls, new String[]{"07:23", "07:58", "08:38", "09:18", "09:58", "10:38", "11:18",
+				"11:58", "12:38", "13:18", "13:58", "14:38", "15:18", "15:58", "16:38", "17:18", "17:58",
+				"18:38", "19:18"}),
+				
+			// HORAIRES LIGNE 1 - STATION 6 - RETOUR - D
+			new Schedule(ls1r6, d, new String[]{"09:45", "11:10", "13:50", "15:15", "16:40", "18:05"}),
+			
+			// HORAIRES LIGNE 1 - STATION 7 - RETOUR - LS
+			new Schedule(ls1r7, ls, new String[]{"07:23", "07:58", "08:38", "09:18", "09:58", "10:38", "11:18",
+				"11:58", "12:38", "13:18", "13:58", "14:38", "15:18", "15:58", "16:38", "17:18", "17:58", "18:38", "19:18"}),
+				
+			// HORAIRES LIGNE 1 - STATION 7 - RETOUR - D
+			new Schedule(ls1r7, d, new String[]{"09:46", "11:11", "13:51", "15:16", "16:41", "18:06"}),
+			
+			// HORAIRES LIGNE 1 - STATION 8 - RETOUR - LS
+			new Schedule(ls1r8, ls, new String[]{"07:25", "08:00", "08:40", "09:20", "10:00", "10:40", "11:20",	"12:00",
+					"12:40", "13:20", "14:00", "14:40", "15:20", "16:00", "16:40", "17:20", "18:00", "18:40", "19:20"}),
+				
+			// HORAIRES LIGNE 1 - STATION 8 - RETOUR - D
+			new Schedule(ls1r8, d, new String[]{"09:47", "11:12", "13:52", "15:17", "16:42", "18:07"}),
+			
+			// HORAIRES LIGNE 1 - STATION 9 - RETOUR - LS
+			new Schedule(ls1r9, ls, new String[]{"07:29", "08:04", "08:44", "09:24", "10:04", "10:44", "11:24", "12:04",
+				"12:44", "13:24", "14:04", "14:44", "15:24", "16:04", "16:44", "17:24", "18:04", "18:44", "19:24"}),
+				
+			// HORAIRES LIGNE 1 - STATION 9 - RETOUR - D
+			new Schedule(ls1r9, d, new String[]{"09:50", "11:15", "13:55", "15:20", "16:45", "18:10"}),
+			
+			
+		/******************************************************************************************************
+		/******************************************LIGNE 2*****************************************************
+		/*****************************************************************************************************/
+			
+			// HORAIRES LIGNE 2 - STATION 1 - ALLER	- LS
+			new Schedule(ls2a1, ls, new String[]{"07:10", "07:50", "08:30", "09:10", "09:50", "10:30", "11:10", "11:50",
+				"12:30", "13:10", "13:50", "14:30", "15:10", "15:50", "16:30", "17:10", "17:50", "18:30", "19:10", "19:45"}),
+			
+			// HORAIRES LIGNE 2 - STATION 2 - ALLER	- LS
+			new Schedule(ls2a2, ls, new String[]{"07:12", "07:52", "08:32", "09:12", "09:52", "10:32", "11:12", "11:52",
+				"12:32", "13:12", "13:52", "14:32", "15:12", "15:52", "16:32", "17:12", "17:52", "18:32", "19:12", "19:47"}),
+			
+			// HORAIRES LIGNE 2 - STATION 3 - ALLER	- LS				
+			new Schedule(ls2a3, ls, new String[]{"07:13", "07:53", "08:33", "09:13", "09:53", "10:33", "11:13", "11:53",
+				"12:33", "13:13", "13:53", "14:33", "15:13", "15:53", "16:33", "17:13", "17:53", "18:33", "19:13", "19:48"}),
+			
+			// HORAIRES LIGNE 2 - STATION 4 - ALLER	- LS				
+			new Schedule(ls2a4, ls, new String[]{"07:14", "07:54", "08:34", "09:14", "09:54", "10:34", "11:14", "11:54",
+				"12:34", "13:14", "13:54", "14:34", "15:14", "15:54", "16:34", "17:14", "17:54", "18:34", "19:14", "19:49"}),
+			
+			// HORAIRES LIGNE 2 - STATION 5 - ALLER	- LS				
+			new Schedule(ls2a5, ls, new String[]{"07:15", "07:55", "08:35", "09:15", "09:55", "10:35", "11:15", "11:55",
+				"12:35", "13:15", "13:55", "14:35", "15:15", "15:55", "16:35", "17:15", "17:55", "18:35", "19:15", "19:50"}),
+			
+			// HORAIRES LIGNE 2 - STATION 6 - ALLER	- LS				
+			new Schedule(ls2a6, ls, new String[]{"07:19", "07:59", "08:39", "09:19", "09:59", "10:39", "11:19", "11:59",
+				"12:39", "13:19", "13:59", "14:39", "15:19", "15:59", "16:39", "17:19", "17:59", "18:39", "19:19", "19:54"}),
+			
+			// HORAIRES LIGNE 2 - STATION 7 - ALLER	- LS				
+			new Schedule(ls2a7, ls, new String[]{"07:23", "08:03", "08:43", "09:23", "10:03", "10:43", "11:23", "12:03",
+				"12:43", "13:23", "14:03", "14:43", "15:23", "16:03", "16:43", "17:23", "18:03", "18:43", "19:23", "19:58"}),
+			
+			// HORAIRES LIGNE 2 - STATION 8 - ALLER	- LS				
+			new Schedule(ls2a8, ls, new String[]{"07:24", "08:04", "08:44", "09:24", "10:04", "10:44", "11:24", "12:04",
+				"12:44", "13:24", "14:04", "14:44", "15:24", "16:04", "16:44", "17:24", "18:04", "18:44", "19:24", "19:59"}),
+			
+			// HORAIRES LIGNE 2 - STATION 9 - ALLER	- LS				
+			new Schedule(ls2a9, ls, new String[]{"07:26", "08:06", "08:46", "09:26", "10:06", "10:46", "11:26", "12:06",
+				"12:46", "13:26", "14:06", "14:46", "15:26", "16:06", "16:46", "17:26", "18:06", "18:46", "19:26", "20:01"}),
+			
+			// HORAIRES LIGNE 2 - STATION 1 - RETOUR - LS
+			new Schedule(ls2r1, ls, new String[]{"07:27", "08:07", "08:47", "09:27", "10:07", "10:47", "11:27", "12:07",
+				"12:47", "13:27", "14:07", "14:47", "15:27", "16:07", "16:47", "17:27", "18:07", "18:47", "19:27", "20:02"}),
+			
+			// HORAIRES LIGNE 2 - STATION 2 - RETOUR - LS
+			new Schedule(ls2r2, ls, new String[]{"07:29", "08:09", "08:49", "09:29", "10:09", "10:49", "11:29", "12:09",
+				"12:49", "13:29", "14:09", "14:49", "15:29", "16:09", "16:49", "17:29", "18:09", "18:49", "19:29", "20:04"}),
+			
+			// HORAIRES LIGNE 2 - STATION 3 - RETOUR - LS
+			new Schedule(ls2r3, ls, new String[]{"07:31", "08:11", "08:51", "09:31", "10:11", "10:51", "11:31", "12:11",
+				"12:51", "13:31", "14:11", "14:51", "15:31", "16:11", "16:51", "17:31", "18:11", "18:51", "19:31", "20:06"}),
+			
+			// HORAIRES LIGNE 2 - STATION 4 - RETOUR - LS
+			new Schedule(ls2r4, ls, new String[]{"07:33", "08:13", "08:53", "09:33", "10:13", "10:53", "11:33", "12:13",
+				"12:53", "13:33", "14:13", "14:53", "15:33", "16:13", "16:53", "17:33", "18:13", "18:53", "19:33", "20:08"}),
+			
+			// HORAIRES LIGNE 2 - STATION 5 - RETOUR - LS
+			new Schedule(ls2r5, ls, new String[]{"07:36", "08:16", "08:56", "09:36", "10:16", "10:56", "11:36", "12:16",
+				"12:56", "13:36", "14:16", "14:56", "15:36", "16:16", "16:56", "17:36", "18:16", "18:56", "19:36", "20:11"}),
+			
+			// HORAIRES LIGNE 2 - STATION 6 - RETOUR - LS
+			new Schedule(ls2r6, ls, new String[]{"07:37", "08:17", "08:57", "09:37", "10:17", "10:57", "11:37", "12:17", "12:57",
+				"13:37", "14:17", "14:57", "15:37", "16:17", "16:57", "17:37", "18:17", "18:57", "19:37", "20:12"}),
+			
+			// HORAIRES LIGNE 2 - STATION 7 - RETOUR - LS
+			new Schedule(ls2r7, ls, new String[]{"07:38", "08:18", "08:58", "09:38", "10:18", "10:58", "11:38", "12:18",
+				"12:58", "13:38", "14:18", "14:58", "15:38", "16:18", "16:58", "17:38", "18:18", "18:58", "19:38", "20:13"}),
+			
+			// HORAIRES LIGNE 2 - STATION 8 - RETOUR - LS
+			new Schedule(ls2r8, ls, new String[]{"07:40", "08:20", "09:00", "09:40", "10:20", "11:00", "11:40", "12:20", "13:00",
+				"13:40", "14:20", "15:00", "15:40", "16:20", "17:00", "17:40", "18:20", "19:00", "19:40", "20:15"}),
+			
+			// HORAIRES LIGNE 2 - STATION 9 - RETOUR - LS
+			new Schedule(ls2r9, ls, new String[]{"07:44", "08:24", "09:04", "09:44", "10:24", "11:04", "11:44", "12:24",
+				"13:04", "13:44", "14:24", "15:04", "15:44", "16:24", "17:04", "17:44", "18:24", "19:04", "19:44", "20:19"}),
+			
+				
+			/******************************************************************************************************
+			/******************************************LIGNE 15****************************************************
+			/*****************************************************************************************************/
+				
+			new Schedule(ls15a1, ls, new String[]{"09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30",
+					"18:30", "19:30"}),
+			new Schedule(ls15a2, ls, new String[]{"09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30",
+					"18:30", "19:30"}),
+			new Schedule(ls15a3, ls, new String[]{"09:01", "10:01", "11:01", "13:31", "14:31", "15:31", "16:31", "17:31",
+					"18:31", "19:31"}),
+			new Schedule(ls15a4, ls, new String[]{"09:02", "10:02", "11:02", "13:32", "14:32", "15:32", "16:32", "17:32", 
+					"18:32", "19:32"}),
+			new Schedule(ls15a5, ls, new String[]{"09:03", "10:03", "11:03", "13:33", "14:33", "15:33", "16:33", "17:33",
+					"18:33", "19:33"}),
+			new Schedule(ls15a6, ls, new String[]{"09:10", "10:10", "11:10", "13:40", "14:40", "15:40", "16:40", "17:40",
+					"18:40", "19:40"}),
+			new Schedule(ls15a7, ls, new String[]{"09:12", "10:12", "11:12", "13:42", "14:42", "15:42", "16:42", "17:42",
+					"18:42", "19:42"}),
+			new Schedule(ls15a8, ls, new String[]{"09:14", "10:14", "11:14", "13:44", "14:44", "15:44", "16:44", "17:44",
+					"18:44","19:44"}),				
+			new Schedule(ls15a9, ls, new String[]{"09:15", "10:15", "11:15", "13:45", "14:45", "15:45", "16:45", "17:45",
+					"18:45", "19:45"}),
+			new Schedule(ls15a10, ls, new String[]{"09:18", "10:18", "11:18", "13:48", "14:48", "15:48", "16:48", "17:48",
+					"18:48", "19:48"}),
+			new Schedule(ls15a11, ls, new String[]{"09:22", "10:22", "11:22", "13:52", "14:52", "15:52", "16:52", "17:52",
+					"18:52", "19:52"}),
+			new Schedule(ls15a12, ls, new String[]{"09:24", "10:24", "11:24", "13:54", "14:54", "15:54", "16:54", "17:54",
+					"18:54", "19:54"}),
+					
+			new Schedule(ls15r1, ls, new String[]{"09:24", "10:24", "11:24", "13:54", "14:54", "15:54", "16:54", "17:54",
+					"18:54", "19:54"}),
+			new Schedule(ls15r2, ls, new String[]{"09:25", "10:25", "11:25", "13:55", "14:55", "15:55", "16:55", "17:55", 
+					"18:55", "19:55"}),
+			new Schedule(ls15r3, ls, new String[]{"09:29", "10:29", "11:29", "13:59", "14:59", "15:59", "16:59", "17:59",
+					"18:59", "19:59"}),
+			new Schedule(ls15r4, ls, new String[]{"09:31", "10:31", "11:31", "14:01", "15:01", "16:01", "17:01", "18:01",
+					"19:01", "20:01"}),
+			new Schedule(ls15r5, ls, new String[]{"09:33", "10:33", "11:33", "14:03", "15:03", "16:03", "17:03", "18:03",
+					"19:03", "20:03"}),
+			new Schedule(ls15r6, ls, new String[]{"09:34", "10:34", "11:34", "14:04", "15:04", "16:04", "17:04", "18:04",
+					"19:04", "20:04"}),
+			new Schedule(ls15r7, ls, new String[]{"09:38", "10:38", "11:38", "14:08", "15:08", "16:08", "17:08", "18:08",
+					"19:08", "20:08"}),
+			new Schedule(ls15r8, ls, new String[]{"09:48", "10:48", "11:48", "14:18", "15:18", "16:18", "17:18", "18:18",
+					"19:18", "20:18"}),
+			new Schedule(ls15r9, ls, new String[]{"09:48", "10:48", "11:48", "14:18", "15:18", "16:18", "17:18", "18:18",
+					"19:18", "20:18"}),
+			new Schedule(ls15r10, ls, new String[]{"09:49", "10:49", "11:49", "14:19", "15:19", "16:19", "17:19", "18:19",
+					"19:19", "20:19"}),
+			new Schedule(ls15r11, ls, new String[]{"09:50", "10:50", "11:50", "14:20", "15:20", "16:20", "17:20", "18:20",
+					"19:20","20:20"}),
+			new Schedule(ls15r12, ls, new String[]{"09:52", "10:52", "11:52", "14:22", "15:22", "16:22", "17:22", "18:22",
+					"19:22", "20:22"}),
+					
+			new Schedule(ls15a1, d, new String[]{"09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30"}),
+			new Schedule(ls15a2, d, new String[]{"09:00", "10:00", "11:00", "13:30", "14:30", "15:30", "16:30", "17:30"}),
+			new Schedule(ls15a3, d, new String[]{"09:01", "10:01", "11:01", "13:31", "14:31", "15:31", "16:31", "17:31"}),
+			new Schedule(ls15a4, d, new String[]{"09:02", "10:02", "11:02", "13:32", "14:32", "15:32", "16:32", "17:32"}),
+			new Schedule(ls15a5, d, new String[]{"09:03", "10:03", "11:03", "13:33", "14:33", "15:33", "16:33", "17:33"}),
+			new Schedule(ls15a6, d, new String[]{"09:10", "10:10", "11:10", "13:40", "14:40", "15:40", "16:40", "17:40"}),
+			new Schedule(ls15a7, d, new String[]{"09:12", "10:12", "11:12", "13:42", "14:42", "15:42", "16:42", "17:42"}),
+			new Schedule(ls15a8, d, new String[]{"09:14", "10:14", "11:14", "13:44", "14:44", "15:44", "16:44", "17:44"}),
+			new Schedule(ls15a9, d, new String[]{"09:15", "10:15", "11:15", "13:45", "14:45", "15:45", "16:45", "17:45"}),
+			new Schedule(ls15a10, d, new String[]{"09:18", "10:18", "11:18", "13:48", "14:48", "15:48", "16:48", "17:48"}),
+			new Schedule(ls15a11, d, new String[]{"09:22", "10:22", "11:22", "13:52", "14:52", "15:52", "16:52", "17:52"}),
+			new Schedule(ls15a12, d, new String[]{"09:24", "10:24", "11:24", "13:54", "14:54", "15:54", "16:54", "17:54"}),
+			
+			new Schedule(ls15r1, d, new String[]{"09:24", "10:24", "11:24", "13:54", "14:54", "15:54", "16:54", "17:54"}),
+			new Schedule(ls15r2, d, new String[]{"09:25", "10:25", "11:25", "13:55", "14:55", "15:55", "16:55", "17:55"}),
+			new Schedule(ls15r3, d, new String[]{"09:29", "10:29", "11:29", "13:59", "14:59", "15:59", "16:59", "17:59"}),
+			new Schedule(ls15r4, d, new String[]{"09:31", "10:31", "11:31", "14:01", "15:01", "16:01", "17:01", "18:01"}),
+			new Schedule(ls15r5, d, new String[]{"09:33", "10:33", "11:33", "14:03", "15:03", "16:03", "17:03", "18:03"}),
+			new Schedule(ls15r6, d, new String[]{"09:34", "10:34", "11:34", "14:04", "15:04", "16:04", "17:04", "18:04"}),
+			new Schedule(ls15r7, d, new String[]{"09:38", "10:38", "11:38", "14:08", "15:08", "16:08", "17:08", "18:08"}),
+			new Schedule(ls15r8, d, new String[]{"09:48", "10:48", "11:48", "14:18", "15:18", "16:18", "17:18", "18:18"}),
+			new Schedule(ls15r9, d, new String[]{"09:48", "10:48", "11:48", "14:18", "15:18", "16:18", "17:18", "18:18"}),
+			new Schedule(ls15r10, d, new String[]{"09:49", "10:49", "11:49", "14:19", "15:19", "16:19", "17:19", "18:19"}),
+			new Schedule(ls15r11, d, new String[]{"09:50", "10:50", "11:50", "14:20", "15:20", "16:20", "17:20", "18:20"}),
+			new Schedule(ls15r12, d, new String[]{"09:52", "10:52", "11:52", "14:22", "15:22", "16:22", "17:22", "18:22"}),
+			
+			
+				
+		};
+		
+		b.schedulesArray.addAll(Arrays.asList(array));
+		GsonBuilder builder = new GsonBuilder()/*.setPrettyPrinting()*/;
+		Gson gson = builder.create();
+		String json = gson.toJson(b);  
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		out.println(json);
+		
+    }
+
+}
