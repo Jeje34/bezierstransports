@@ -49,6 +49,7 @@ public final class StationDAO {
             CityDAO.getCityDAO().addCity(station.getCity());
 
             ContentValues values = new ContentValues();
+            values.put(DatabaseHandler.KEY_ID, station.getId());
             values.put(DatabaseHandler.KEY_STATIONNAME, station.getStationName());
             values.put(DatabaseHandler.KEY_LATITUDE, station.getLatitude());
             values.put(DatabaseHandler.KEY_LONGITUDE, station.getLongitude());
@@ -91,16 +92,19 @@ public final class StationDAO {
                         DatabaseHandler.KEY_LATITUDE, DatabaseHandler.KEY_LONGITUDE, DatabaseHandler.KEY_IDCITY},
                 DatabaseHandler.KEY_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            Station station = new Station();
-            station.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
-            station.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_STATIONNAME)));
-            station.setLatitude(cursor.getFloat(cursor.getColumnIndex(DatabaseHandler.KEY_LATITUDE)));
-            station.setLongitude(cursor.getFloat(cursor.getColumnIndex(DatabaseHandler.KEY_LONGITUDE)));
-            station.setCity(CityDAO.getCityDAO().getCity(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDCITY))));
-            return station;
+        try {
+            if (cursor.moveToFirst()) {
+                Station station = new Station();
+                station.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
+                station.setStationName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_STATIONNAME)));
+                station.setLatitude(cursor.getFloat(cursor.getColumnIndex(DatabaseHandler.KEY_LATITUDE)));
+                station.setLongitude(cursor.getFloat(cursor.getColumnIndex(DatabaseHandler.KEY_LONGITUDE)));
+                station.setCity(CityDAO.getCityDAO().getCity(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDCITY))));
+                return station;
+            } else return null;
+        } finally {
+            cursor.close();
         }
-        else return null;
     }
 
 

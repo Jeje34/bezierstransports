@@ -40,6 +40,7 @@ public class PeriodDAO {
 
             SQLiteDatabase db = this.dh.getWritableDatabase();
             ContentValues values = new ContentValues();
+            values.put(DatabaseHandler.KEY_ID, period.getId());
             values.put(DatabaseHandler.KEY_PERIOD, period.getPeriod());
             values.put(DatabaseHandler.KEY_SEASON, period.getSeason());
 
@@ -59,13 +60,16 @@ public class PeriodDAO {
                         DatabaseHandler.KEY_SEASON},
                 DatabaseHandler.KEY_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            Period period = new Period();
-            period.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
-            period.setPeriod(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_PERIOD)));
-            period.setSeason(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SEASON)));
-            return period;
+        try {
+            if (cursor.moveToFirst()) {
+                Period period = new Period();
+                period.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
+                period.setPeriod(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_PERIOD)));
+                period.setSeason(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SEASON)));
+                return period;
+            } else return null;
+        } finally {
+            cursor.close();
         }
-        else return null;
     }
 }

@@ -95,15 +95,18 @@ public final class LineStationDAO {
                         DatabaseHandler.KEY_DIRECTION + " = ?",
                 new String[]{line.getLineNumber(), String.valueOf(station.getId()), direction}, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            LineStation ls = new LineStation();
-            ls.setLine(LineDAO.getLineDAO().getLine(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER))));
-            ls.setStation(StationDAO.getStationDAO().getStation(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION))));
-            ls.setDirection(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DIRECTION)));
-            ls.setOrdre(cursor.getInt(cursor.getColumnIndex(DatabaseHandler.KEY_ORDRE)));
-            return ls;
+        try {
+            if (cursor.moveToFirst()) {
+                LineStation ls = new LineStation();
+                ls.setLine(LineDAO.getLineDAO().getLine(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER))));
+                ls.setStation(StationDAO.getStationDAO().getStation(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION))));
+                ls.setDirection(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DIRECTION)));
+                ls.setOrdre(cursor.getInt(cursor.getColumnIndex(DatabaseHandler.KEY_ORDRE)));
+                return ls;
+            } else return null;
+        } finally {
+            cursor.close();
         }
-        else return null;
     }
 
 }

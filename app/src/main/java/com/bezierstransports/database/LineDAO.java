@@ -80,13 +80,16 @@ public final class LineDAO {
                 new String[]{DatabaseHandler.KEY_LINENUMBER, DatabaseHandler.KEY_LINENAME},
                 DatabaseHandler.KEY_LINENUMBER + " = ?", new String[]{lineNumber}, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            Line line = new Line();
-            line.setLineNumber(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER)));
-            line.setLineName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENAME)));
-            return line;
+        try {
+            if (cursor.moveToFirst()) {
+                Line line = new Line();
+                line.setLineNumber(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER)));
+                line.setLineName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENAME)));
+                return line;
+            } else return null;
+        } finally {
+            cursor.close();
         }
-        else return null;
     }
 
 

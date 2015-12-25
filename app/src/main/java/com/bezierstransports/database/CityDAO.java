@@ -39,6 +39,7 @@ public class CityDAO {
                 new String[]{String.valueOf(city.getId())}) == 0) {
             SQLiteDatabase db = this.dh.getWritableDatabase();
             ContentValues values = new ContentValues();
+            values.put(DatabaseHandler.KEY_ID, city.getId());
             values.put(DatabaseHandler.KEY_CITYNAME, city.getCityName());
 
             // insert the city in the DB and get ID
@@ -55,12 +56,15 @@ public class CityDAO {
                 new String[]{DatabaseHandler.KEY_ID, DatabaseHandler.KEY_CITYNAME},
                 DatabaseHandler.KEY_ID + " = ?", new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            City city = new City();
-            city.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
-            city.setCityName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_CITYNAME)));
-            return city;
+        try {
+            if (cursor.moveToFirst()) {
+                City city = new City();
+                city.setId(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_ID)));
+                city.setCityName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_CITYNAME)));
+                return city;
+            } else return null;
+        } finally {
+            cursor.close();
         }
-        else return null;
     }
 }

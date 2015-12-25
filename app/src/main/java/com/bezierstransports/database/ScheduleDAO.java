@@ -128,24 +128,29 @@ public class ScheduleDAO {
                 new String[]{ls.getLine().getLineNumber(), String.valueOf(ls.getStation().getId())}
                 , null, null, null, null);
 
-        if (cursor.moveToFirst()) {
-            do {
-                Schedule schedule = new Schedule();
-                schedule.setLineStation(LineStationDAO.getLineStationDAO().getLineStation(
-                                LineDAO.getLineDAO().getLine(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER))),
-                                StationDAO.getStationDAO().getStation(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION))),
-                                cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DIRECTION)))
-                );
-                schedule.setPeriod(PeriodDAO.getPeriodDAO().getPeriod(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDPERIOD))));
-                try {
-                    schedule.setSchedule(BeziersTransports.getScheduleFormat().parse(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SCHEDULE))));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    Schedule schedule = new Schedule();
+                    schedule.setLineStation(LineStationDAO.getLineStationDAO().getLineStation(
+                                    LineDAO.getLineDAO().getLine(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER))),
+                                    StationDAO.getStationDAO().getStation(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDSTATION))),
+                                    cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_DIRECTION)))
+                    );
+                    schedule.setPeriod(PeriodDAO.getPeriodDAO().getPeriod(cursor.getLong(cursor.getColumnIndex(DatabaseHandler.KEY_IDPERIOD))));
+                    try {
+                        schedule.setSchedule(BeziersTransports.getScheduleFormat().parse(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_SCHEDULE))));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-                schedulesList.add(schedule);
-            } while (cursor.moveToNext());
+                    schedulesList.add(schedule);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
         }
+
         return schedulesList;
     }
 }
