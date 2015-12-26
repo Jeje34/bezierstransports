@@ -421,13 +421,14 @@ public class Servlet extends HttpServlet {
 				 "16:43", "17:06", "17:21", "17:36", "17:51", "18:14", "18:30", "18:44", "19:00","19:20",
 				 "19:36", "20:00"};
 		
-		String[] h5_r_s = new String[]{"06:00", "06:55", "07:20", "07:35", "07:50", "08:05", "08:20",
-				"08:35", "08:50", "09:05", "09:20", "09:35", "09:50", "10:05", "10:20", "10:35", "10:50",
-				"11:05", "11:20", "11:35", "11:50", "12:05", "12:20", "12:35", "12:50", "13:05", "13:14",
-				 "13:42", "14:12", "14:27", "14:50", "15:05", "15:20", "15:35", "15:58", "16:13", "16:28",
-				 "16:43", "17:06", "17:21", "17:36", "17:51", "18:14", "18:30", "18:44", "19:00","19:20",
-				 "19:36", "20:00"};
+		String[] h5_a_s = new String[]{"06:00", "07:00", "07:40", "08:00", "08:20",
+				"08:40", "09:00", "09:20", "09:40", "10:00", "10:20", "10:40", "11:00", "11:20",
+				"11:40", "12:00", "12:20", "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40",
+				 "15:00", "15:20", "15:40", "16:00", "16:20", "16:40", "17:00", "17:20", "17:40", "18:00",
+				 "18:20", "18:40", "19:00", "19:15", "19:40", "20:00"};
 		
+		String[] h5_a_d = new String[]{"09:10", "10:10", "11:10", "12:10", "14:10",
+				"15:10", "16:10", "17:10", "18:10", "19:10"};
 		
 		// LIGNE 5 - RETOUR		
 		LineStation ls5r1 = new LineStation(l5, ccMontimaran , "R", 1);
@@ -450,6 +451,22 @@ public class Servlet extends HttpServlet {
 		LineStation ls5r18 = new LineStation(l5, claparede, "R", 18);
 		LineStation ls5r19 = new LineStation(l5, aout22, "R", 19);
 		LineStation ls5r20 = new LineStation(l5, deGaulle, "R", 20);
+		
+		String[] h5_r_lv = new String[]{"06:26", "06:46", "07:01", "07:21", "07:31", "07:46", "08:01",
+				"08:16", "08:31", "08:46", "09:01", "09:16", "09:31", "09:46", "10:01", "10:16", "10:31",
+				"10:46", "11:01", "11:16", "11:31", "11:46", "12:01", "12:16", "12:31", "13:06", "13:21",
+				 "13:36", "13:51", "14:14", "14:29", "14:44", "14:59", "15:22", "15:37", "15:52", "16:07",
+				 "16:30", "16:45", "17:00", "17:15", "17:38", "17:53", "18:08", "18:23", "18:46", "19:02",
+				 "19:16", "19:32", "19:49", "20:06"};
+		
+		String[] h5_r_s = new String[]{"06:26", "07:06", "07:26", "07:46", "08:06",
+				"08:26", "08:46", "09:06", "09:26", "09:46", "10:06", "10:26", "10:46", "11:06",
+				"11:26", "11:46", "12:06", "12:26", "12:46", "13:06", "13:26", "13:46", "14:06", "14:26",
+				 "14:46", "15:06", "15:26", "15:46", "16:06", "16:26", "16:46", "17:06", "17:26", "17:46",
+				 "18:06", "18:26", "18:46", "19:06", "19:26", "19:41", "20:08"};
+		
+		String[] h5_r_d = new String[]{"09:36", "10:36", "11:36", "13:36", "14:36",
+				"15:36", "16:36", "17:36", "18:36", "19:36"};
 				
 		
 		// LIGNE 15 - ALLER
@@ -780,6 +797,144 @@ public class Servlet extends HttpServlet {
 				/*************************LIGNE 5*****************************/
 				/*************************************************************/
 				
+				// LIGNE 5 - ALLER - LV
+				new Schedule(ls5a1, lv, h5_a_lv),
+				new Schedule(ls5a2, lv, add(h5_a_lv, 1, 27, 2, 47, 2, 48, 1)),
+				new Schedule(ls5a3, lv, add(h5_a_lv, 3, 27, 4, 47, 4, 48, 3)),
+				new Schedule(ls5a4, lv, add(h5_a_lv, 4, 27, 6, 47, 6, 48, 4)),
+				new Schedule(ls5a5, lv, add(h5_a_lv, 6, 27, 8, 47, 8, 48, 6)),
+				new Schedule(ls5a6, lv, add(h5_a_lv, 7, 27, 9, 47, 9, 48, 7)),
+				new Schedule(ls5a7, lv, add(h5_a_lv, 8, 27, 11, 47, 11, 48,8 )),
+				new Schedule(ls5a8, lv, add(h5_a_lv, 9, 27, 12, 47, 12, 48, 9)),
+				new Schedule(ls5a9, lv, add(h5_a_lv, 10, 27, 13, 47, 13, 48, 10)),
+				new Schedule(ls5a10, lv, add(h5_a_lv, 11, 27, 14, 47, 14, 48, 11)),
+				new Schedule(ls5a11, lv, add(h5_a_lv, 12, 27, 15, 47, 15, 48, 12)),
+				new Schedule(ls5a12, lv, add(h5_a_lv, 13, 27, 16, 47, 16, 48, 13)),
+				new Schedule(ls5a13, lv, add(h5_a_lv, 14, 27, 18, 47, 17, 48, 14)),
+				new Schedule(ls5a14, lv, add(h5_a_lv, 15, 27, 19, 47, 18, 48, 15)),
+				new Schedule(ls5a15, lv, add(h5_a_lv, 16, 27, 20, 47, 19, 48, 16)),
+				new Schedule(ls5a16, lv, add(h5_a_lv, 17, 27, 21, 47, 20, 48, 17)),
+				new Schedule(ls5a17, lv, add(h5_a_lv, 18, 27, 22, 47, 21, 48, 18)),
+				new Schedule(ls5a18, lv, add(h5_a_lv, 20, 27, 24, 47, 23, 48, 20)),
+				new Schedule(ls5a19, lv, add(h5_a_lv, 20, 27, 25, 47, 23, 48, 20)),
+				new Schedule(ls5a20, lv, add(h5_a_lv, 22, 27, 26, 47, 25, 48, 22)),
+				new Schedule(ls5a21, lv, add(h5_a_lv, 23, 27, 28, 47, 26, 48, 23)),
+				new Schedule(ls5a22, lv, add(h5_a_lv, 24, 27, 30, 47, 27, 48, 24)),
+				
+				// LIGNE 5 - ALLER - S
+				new Schedule(ls5a1, s, h5_a_s),
+				new Schedule(ls5a2, s, add(h5_a_s, 2)),
+				new Schedule(ls5a3, s, add(h5_a_s, 3)),
+				new Schedule(ls5a4, s, add(h5_a_s, 5)),
+				new Schedule(ls5a5, s, add(h5_a_s, 7)),
+				new Schedule(ls5a6, s, add(h5_a_s, 7)),
+				new Schedule(ls5a7, s, add(h5_a_s, 8)),
+				new Schedule(ls5a8, s, add(h5_a_s, 9)),
+				new Schedule(ls5a9, s, add(h5_a_s, 10)),
+				new Schedule(ls5a10, s, add(h5_a_s, 11)),
+				new Schedule(ls5a11, s, add(h5_a_s, 12)),
+				new Schedule(ls5a12, s, add(h5_a_s, 13)),
+				new Schedule(ls5a13, s, add(h5_a_s, 14)),
+				new Schedule(ls5a14, s, add(h5_a_s, 15)),
+				new Schedule(ls5a15, s, add(h5_a_s, 16)),
+				new Schedule(ls5a16, s, add(h5_a_s, 17)),
+				new Schedule(ls5a17, s, add(h5_a_s, 18)),
+				new Schedule(ls5a18, s, add(h5_a_s, 20)),
+				new Schedule(ls5a19, s, add(h5_a_s, 20)),
+				new Schedule(ls5a20, s, add(h5_a_s, 22)),
+				new Schedule(ls5a21, s, add(h5_a_s, 23)),
+				new Schedule(ls5a22, s, add(h5_a_s, 24)),
+				
+				// LIGNE 5 - ALLER - D
+				new Schedule(ls5a1, d, h5_a_d),
+				new Schedule(ls5a2, d, add(h5_a_d, 2)),
+				new Schedule(ls5a3, d, add(h5_a_d, 3)),
+				new Schedule(ls5a4, d, add(h5_a_d, 5)),
+				new Schedule(ls5a5, d, add(h5_a_d, 7)),
+				new Schedule(ls5a6, d, add(h5_a_d, 7)),
+				new Schedule(ls5a7, d, add(h5_a_d, 8)),
+				new Schedule(ls5a8, d, add(h5_a_d, 9)),
+				new Schedule(ls5a9, d, add(h5_a_d, 10)),
+				new Schedule(ls5a10, d, add(h5_a_d, 11)),
+				new Schedule(ls5a11, d, add(h5_a_d, 12)),
+				new Schedule(ls5a12, d, add(h5_a_d, 13)),
+				new Schedule(ls5a13, d, add(h5_a_d, 15)),
+				new Schedule(ls5a14, d, add(h5_a_d, 16)),
+				new Schedule(ls5a15, d, add(h5_a_d, 17)),
+				new Schedule(ls5a16, d, add(h5_a_d, 18)),
+				new Schedule(ls5a17, d, add(h5_a_d, 19)),
+				new Schedule(ls5a18, d, add(h5_a_d, 21)),
+				new Schedule(ls5a19, d, add(h5_a_d, 21)),
+				new Schedule(ls5a20, d, add(h5_a_d, 22)),
+				new Schedule(ls5a21, d, add(h5_a_d, 23)),
+				new Schedule(ls5a22, d, add(h5_a_d, 24)),
+				
+				// LIGNE 5 - RETOUR - LV
+				new Schedule(ls5r1, lv, h5_r_lv),
+				new Schedule(ls5r2, lv, add(h5_r_lv, 0, 26, 1, 50, 0)),
+				new Schedule(ls5r3, lv, add(h5_r_lv, 1, 26, 2, 50, 1)),
+				new Schedule(ls5r4, lv, add(h5_r_lv, 2, 26, 3, 50, 2)),
+				new Schedule(ls5r5, lv, add(h5_r_lv, 5, 26, 6, 50, 5)),
+				new Schedule(ls5r6, lv, add(h5_r_lv, 6, 26, 7, 50, 6)),
+				new Schedule(ls5r7, lv, add(h5_r_lv, 6, 26, 8, 49, 7, 50, 6)),
+				new Schedule(ls5r8, lv, add(h5_r_lv, 7, 26, 8, 49, 8, 50, 7)),
+				new Schedule(ls5r9, lv, add(h5_r_lv, 8, 26, 9, 49, 9, 50, 8)),
+				new Schedule(ls5r10, lv, add(h5_r_lv, 9, 26, 11, 49, 10, 50, 9)),
+				new Schedule(ls5r11, lv, add(h5_r_lv, 9, 26, 12, 49, 10, 50, 9)),
+				new Schedule(ls5r12, lv, add(h5_r_lv, 10, 26, 13, 49, 11, 50, 10)),
+				new Schedule(ls5r13, lv, add(h5_r_lv, 14, 26, 17, 49, 15, 50, 14)),
+				new Schedule(ls5r14, lv, add(h5_r_lv, 15, 26, 19, 49, 16, 50, 15)),
+				new Schedule(ls5r15, lv, add(h5_r_lv, 16, 26, 21, 49, 17, 50, 16)),
+				new Schedule(ls5r16, lv, add(h5_r_lv, 18, 26, 23, 49, 19, 50, 18)),
+				new Schedule(ls5r17, lv, add(h5_r_lv, 19, 26, 24, 49, 20, 50, 19)),
+				new Schedule(ls5r18, lv, add(h5_r_lv, 20, 26, 25, 49, 21, 50, 20)),
+				new Schedule(ls5r19, lv, add(h5_r_lv, 22, 26, 27, 49, 23, 50, 22)),
+				new Schedule(ls5r20, lv, add(h5_r_lv, 24, 26, 29, 49, 25, 50, 24)),
+				
+				// LIGNE 5 - RETOUR - S
+				new Schedule(ls5r1, s, h5_r_s),
+				new Schedule(ls5r2, s, h5_r_s),
+				new Schedule(ls5r3, s, add(h5_r_s, 1)),
+				new Schedule(ls5r4, s, add(h5_r_s, 2)),
+				new Schedule(ls5r5, s, add(h5_r_s, 4)),
+				new Schedule(ls5r6, s, add(h5_r_s, 5)),
+				new Schedule(ls5r7, s, add(h5_r_s, 6)),
+				new Schedule(ls5r8, s, add(h5_r_s, 6)),
+				new Schedule(ls5r9, s, add(h5_r_s, 7)),
+				new Schedule(ls5r10, s, add(h5_r_s, 9)),
+				new Schedule(ls5r11, s, add(h5_r_s, 9)),
+				new Schedule(ls5r12, s, add(h5_r_s, 10)),
+				new Schedule(ls5r13, s, add(h5_r_s, 14)),
+				new Schedule(ls5r14, s, add(h5_r_s, 15)),
+				new Schedule(ls5r15, s, add(h5_r_s, 16)),
+				new Schedule(ls5r16, s, add(h5_r_s, 17)),
+				new Schedule(ls5r17, s, add(h5_r_s, 18)),
+				new Schedule(ls5r18, s, add(h5_r_s, 20)),
+				new Schedule(ls5r19, s, add(h5_r_s, 21)),
+				new Schedule(ls5r20, s, add(h5_r_s, 24)),
+				
+				// LIGNE 5 - RETOUR - D
+				new Schedule(ls5r1, d, h5_r_d),
+				new Schedule(ls5r2, d, h5_r_d),
+				new Schedule(ls5r3, d, add(h5_r_d, 1)),
+				new Schedule(ls5r4, d, add(h5_r_d, 2)),
+				new Schedule(ls5r5, d, add(h5_r_d, 4)),
+				new Schedule(ls5r6, d, add(h5_r_d, 5)),
+				new Schedule(ls5r7, d, add(h5_r_d, 5)),
+				new Schedule(ls5r8, d, add(h5_r_d, 6)),
+				new Schedule(ls5r9, d, add(h5_r_d, 7)),
+				new Schedule(ls5r10, d, add(h5_r_d, 8)),
+				new Schedule(ls5r11, d, add(h5_r_d, 8)),
+				new Schedule(ls5r12, d, add(h5_r_d, 9)),
+				new Schedule(ls5r13, d, add(h5_r_d, 11)),
+				new Schedule(ls5r14, d, add(h5_r_d, 12)),
+				new Schedule(ls5r15, d, add(h5_r_d, 14)),
+				new Schedule(ls5r16, d, add(h5_r_d, 17)),
+				new Schedule(ls5r17, d, add(h5_r_d, 18 )),
+				new Schedule(ls5r18, d, add(h5_r_d, 20)),
+				new Schedule(ls5r19, d, add(h5_r_d, 21)),
+				new Schedule(ls5r20, d, add(h5_r_d, 24 )),
+				
 				/*************************************************************/
 				/*************************LIGNE 15*****************************/
 				/*************************************************************/
@@ -927,6 +1082,36 @@ public class Servlet extends HttpServlet {
 			resultat[i] = df.format(c.getTime());
 		}
 		for (int i=i2 ; i < tab.length ; i++) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(df.parse(tab[i]));
+			c.add(Calendar.MINUTE, minutesApres);
+			resultat[i] = df.format(c.getTime());
+		} 
+		return resultat;
+	}
+	
+	private String[] add(String[] tab, int minutesAvant, int i1, int minutesEntre1, int i2, int minutesEntre2,
+			int i3, int minutesApres) throws ParseException {
+		String[] resultat = new String[tab.length];
+		for (int i=0 ; i < i1 ; i++) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(df.parse(tab[i]));
+			c.add(Calendar.MINUTE, minutesAvant);
+			resultat[i] = df.format(c.getTime());
+		}
+		for (int i=i1 ; i < i2 ; i++) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(df.parse(tab[i]));
+			c.add(Calendar.MINUTE, minutesEntre1);
+			resultat[i] = df.format(c.getTime());
+		}
+		for (int i=i2 ; i < i3 ; i++) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(df.parse(tab[i]));
+			c.add(Calendar.MINUTE, minutesEntre2);
+			resultat[i] = df.format(c.getTime());
+		} 
+		for (int i=i3 ; i < tab.length ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesApres);
