@@ -22,7 +22,7 @@ import java.util.List;
 
 public class WebService {
 
-    private final String URL = "http://www.petit-fichier.fr/2015/12/25/bezierstransport-1/bezierstransport.json";
+    private final String URL = "http://www.petit-fichier.fr/2015/12/27/servlet-3/servlet.json";
     Gson gson;
 
 

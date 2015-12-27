@@ -72,16 +72,16 @@ public class ScheduleDAO {
         String dayString = BeziersTransports.getDayFormat().format(BeziersTransports.getDay());
         if (dayString.equals("lundi") || dayString.equals("mardi") || dayString.equals("mercredi")
                 || dayString.equals("jeudi") || dayString.equals("vendredi")) {
-            period1 = "1"; // because idPeriod = 1 <=> LV
-            period2 = "3"; // because idPeriod = 3 <=> LS
+            period1 = "1"; // because idPeriod = 1 <=> LS
+            period2 = "3"; // because idPeriod = 3 <=> LV
         }
         else if (dayString.equals("samedi")) {
-            period1 = "2"; // because idPeriod = 2 <=> S
-            period2 = "3"; // because idPeriod = 3 <=> LS
+            period1 = "4"; // because idPeriod = 4 <=> S
+            period2 = "1"; // because idPeriod = 1 <=> LS
         }
         else { // dayString = "Sun"
-            period1 = "4";
-            period2 = "4";  // because idPeriod = 4 <=> D
+            period1 = "2";
+            period2 = "2";  // because idPeriod = 2 <=> D
         }
 
         Cursor cursor = db.query(DatabaseHandler.TABLE_SCHEDULE,

@@ -34,7 +34,7 @@ public class ListLinesActivity extends AppCompatActivity {
 
         // first launch ever: get data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("firstTime", false)) {
+        if (prefs.getBoolean("firstTime", false)) {
             new GetDataTask(ListLinesActivity.this, listViewLines, adapterLine).execute();
             // mark first time has runned
             SharedPreferences.Editor editor = prefs.edit();

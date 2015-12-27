@@ -20,4 +20,6 @@
     <string name="title_activity_line_map">LineMapActivity</string>
     <string name="map">Consulter la carte</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="samedi">Samedi</string>
+    <string name="lundiAVendredi">Lundi à vendredi</string>
 </resources>

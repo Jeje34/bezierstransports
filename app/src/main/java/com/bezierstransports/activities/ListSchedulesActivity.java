@@ -107,6 +107,12 @@ public class ListSchedulesActivity extends AppCompatActivity {
                 case "D":
                     labelPeriod = getString(R.string.dimanche);
                     break;
+                case "LV":
+                    labelPeriod = getString(R.string.lundiAVendredi);
+                    break;
+                case "S":
+                    labelPeriod = getString(R.string.samedi);
+                    break;
             }
 
             if (!labelRadioButtonList.contains(period)) {
@@ -136,6 +142,18 @@ public class ListSchedulesActivity extends AppCompatActivity {
                     } else {
                         getData("D", "R");
                     }
+                } else if (period.equals(getString(R.string.lundiAVendredi))) {
+                    if (radioButtonAller.isChecked()) {
+                        getData("LV", "A");
+                    } else {
+                        getData("LV", "R");
+                    }
+                } else if (period.equals(getString(R.string.samedi))) {
+                    if (radioButtonAller.isChecked()) {
+                        getData("S", "A");
+                    } else {
+                        getData("S", "R");
+                    }
                 }
             }
         });
@@ -153,6 +171,11 @@ public class ListSchedulesActivity extends AppCompatActivity {
                     } else if (period.equals(getString(R.string.dimanche))) {
                         getData("D", "A");
                         break;
+                    } else if (period.equals(getString(R.string.lundiAVendredi))) {
+                        getData("LV", "A");
+                        break;
+                    } else if (period.equals(getString(R.string.samedi))) {
+                        getData("S", "A");
                     }
                 }
             }
@@ -171,6 +194,11 @@ public class ListSchedulesActivity extends AppCompatActivity {
                     } else if (period.equals(getString(R.string.dimanche))) {
                         getData("D", "R");
                         break;
+                    } else if (period.equals(getString(R.string.lundiAVendredi))) {
+                        getData("LV", "R");
+                        break;
+                    } else if (period.equals(getString(R.string.samedi))) {
+                        getData("S", "R");
                     }
                 }
             }
