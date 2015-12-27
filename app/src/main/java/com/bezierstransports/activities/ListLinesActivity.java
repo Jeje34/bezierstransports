@@ -43,7 +43,7 @@ public class ListLinesActivity extends AppCompatActivity {
 
         } else {
             List<Line> liste = LineDAO.getLineDAO().getLines();
-            adapterLine = new AdapterLine(ListLinesActivity.this, android.R.layout.simple_list_item_1, liste);
+            adapterLine = new AdapterLine(ListLinesActivity.this, R.layout.row_line, liste);
             listViewLines.setAdapter(adapterLine);
             listViewLines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

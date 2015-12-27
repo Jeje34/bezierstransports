@@ -46,6 +46,7 @@ public final class LineDAO {
             ContentValues values = new ContentValues();
             values.put(DatabaseHandler.KEY_LINENUMBER, line.getLineNumber());
             values.put(DatabaseHandler.KEY_LINENAME, line.getLineName());
+            values.put(DatabaseHandler.KEY_COLOR, line.getColor());
             // insert the bus line in the DB
             db.insert(DatabaseHandler.TABLE_LINE, null, values);
             db.close();
@@ -77,7 +78,7 @@ public final class LineDAO {
         SQLiteDatabase db = this.dh.getReadableDatabase();
 
         Cursor cursor = db.query(DatabaseHandler.TABLE_LINE,
-                new String[]{DatabaseHandler.KEY_LINENUMBER, DatabaseHandler.KEY_LINENAME},
+                new String[]{DatabaseHandler.KEY_LINENUMBER, DatabaseHandler.KEY_LINENAME, DatabaseHandler.KEY_COLOR},
                 DatabaseHandler.KEY_LINENUMBER + " = ?", new String[]{lineNumber}, null, null, null, null);
 
         try {
@@ -85,6 +86,7 @@ public final class LineDAO {
                 Line line = new Line();
                 line.setLineNumber(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENUMBER)));
                 line.setLineName(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_LINENAME)));
+                line.setColor(cursor.getString(cursor.getColumnIndex(DatabaseHandler.KEY_COLOR)));
                 return line;
             } else return null;
         } finally {

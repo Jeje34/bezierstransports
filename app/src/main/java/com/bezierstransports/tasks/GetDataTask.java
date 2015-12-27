@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.bezierstransports.BeziersTransports;
+import com.bezierstransports.R;
 import com.bezierstransports.activities.ListStationsActivity;
 import com.bezierstransports.adapters.AdapterLine;
 import com.bezierstransports.database.LineDAO;
@@ -66,7 +67,7 @@ public class GetDataTask extends AsyncTask<Void, Void, List<Line>> {
             dialog.dismiss();
         }
 
-        adapterLine = new AdapterLine(activity.getBaseContext(), android.R.layout.simple_list_item_1, result);
+        adapterLine = new AdapterLine(activity.getBaseContext(), R.layout.row_line, result);
         listViewLines.setAdapter(adapterLine);
         listViewLines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

@@ -3,8 +3,6 @@ package com.bezierstransports.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +13,7 @@ public class Line implements Parcelable {
 
     private String lineNumber;
     private String lineName;
+    private String color;
     List<Station> stations = new ArrayList<Station>();
 
     public Line() { }
@@ -41,6 +40,14 @@ public class Line implements Parcelable {
 
     public void setStations(List<Station> stations) {
         this.stations = stations;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override

@@ -2,8 +2,8 @@ package com.bezierstransports.database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Created by Jérémy Pastor on 10/11/2015.
@@ -17,6 +17,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     protected static final String TABLE_LINE = "line";
     protected static final String KEY_LINENUMBER = "lineNumber";
     protected static final String KEY_LINENAME = "lineName";
+    protected static final String KEY_COLOR = "color";
 
     protected static final String TABLE_STATION = "station";
     protected static final String KEY_STATIONNAME = "stationName";
@@ -49,7 +50,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LINE_TABLE = "CREATE TABLE " + TABLE_LINE + "("  +
                 KEY_LINENUMBER + "  VARCHAR(4) PRIMARY KEY," +
-                KEY_LINENAME + " VARCHAR(200) NOT NULL" + ")";
+                KEY_LINENAME + " VARCHAR(200) NOT NULL," +
+                KEY_COLOR + " VARCHAR(7))";
         db.execSQL(CREATE_LINE_TABLE);
 
         String CREATE_CITY_TABLE = "CREATE TABLE " + TABLE_CITY + "("  +
