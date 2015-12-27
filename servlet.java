@@ -168,7 +168,29 @@ public class Servlet extends HttpServlet {
 		Station birHakeim = new Station(95, "Bir Hakeim", 0.0f, 0.0f, beziers);
 		Station montimaran1 = new Station(96, "Montimaran 1", 0.0f, 0.0f, beziers);
 		Station ccMontimaran = new Station(97, "CC Montimaran", 0.0f, 0.0f, beziers);
-				
+		Station perrin = new Station(98, "Jean Perrin", 0.0f, 0.0f, beziers);
+		Station saintPieX = new Station(99, "Saint Pie X", 0.0f, 0.0f, beziers);		
+		Station carrefourDuGausselet = new Station(100, "Carrefour du Gausselet", 0.0f, 0.0f, beziers);
+		Station heilbronn = new Station(101, "Heilbronn", 0.0f, 0.0f, beziers);
+		Station lesJasmins = new Station(102, "Les Jasmins", 0.0f, 0.0f, beziers);
+		Station lesTamaris = new Station(103, "Les Tamaris", 0.0f, 0.0f, beziers);
+		Station lesTertres = new Station(104, "Les Tertres", 0.0f, 0.0f, beziers);
+		Station dorat = new Station(105, "Dorat", 0.0f, 0.0f, beziers);
+		Station lachenal = new Station(106, "Lachenal - Hôpital", 0.0f, 0.0f, beziers);
+		Station tourDeMail = new Station(107, "Tour de Mail", 0.0f, 0.0f, beziers);
+		Station bouin = new Station(108, "J. Bouin", 0.0f, 0.0f, beziers);
+		Station deveze = new Station(109, "Devèze", 0.0f, 0.0f, beziers);
+		
+		Station capiscol = new Station(110, "Capiscol", 0.0f, 0.0f, beziers);
+		Station acacias = new Station(111, "Acacias", 0.0f, 0.0f, beziers);
+		Station tilleuls = new Station(112, "Tilleuls", 0.0f, 0.0f, beziers);
+		Station bouleaux = new Station(113, "Bouleaux", 0.0f, 0.0f, beziers);
+		Station pechDeGargailhan = new Station(114, "Pech de Gargailhan", 0.0f, 0.0f, beziers);
+		Station europe = new Station(115, "Europe", 0.0f, 0.0f, beziers);
+		Station avenueDeLaDeveze = new Station(116, "Avenue de la Devèze", 0.0f, 0.0f, beziers);
+		Station galois = new Station(117, "E. Galois", 0.0f, 0.0f, beziers);
+		Station parcDuCapiscolOuest = new Station(118, "Parc du Capiscol Ouest", 0.0f, 0.0f, beziers);
+		
 		Station pontAutoroute = new Station(201, "Pont Autoroute", 0.0f, 0.0f, vlb);
 		Station cimetiere = new Station(202, "Cimetière", 0.0f, 0.0f, vlb);
 		Station centre = new Station(203, "Centre", 0.0f, 0.0f, vlb);
@@ -418,7 +440,7 @@ public class Servlet extends HttpServlet {
 				"08:35", "08:50", "09:05", "09:20", "09:35", "09:50", "10:05", "10:20", "10:35", "10:50",
 				"11:05", "11:20", "11:35", "11:50", "12:05", "12:20", "12:35", "12:50", "13:05", "13:14",
 				 "13:42", "14:12", "14:27", "14:50", "15:05", "15:20", "15:35", "15:58", "16:13", "16:28",
-				 "16:43", "17:06", "17:21", "17:36", "17:51", "18:14", "18:30", "18:44", "19:00","19:20",
+				 "16:43", "17:06", "17:21", "17:36", "17:51", "18:14", "18:30", "18:44", "19:00", "19:20",
 				 "19:36", "20:00"};
 		
 		String[] h5_a_s = new String[]{"06:00", "07:00", "07:40", "08:00", "08:20",
@@ -463,10 +485,35 @@ public class Servlet extends HttpServlet {
 				"08:26", "08:46", "09:06", "09:26", "09:46", "10:06", "10:26", "10:46", "11:06",
 				"11:26", "11:46", "12:06", "12:26", "12:46", "13:06", "13:26", "13:46", "14:06", "14:26",
 				 "14:46", "15:06", "15:26", "15:46", "16:06", "16:26", "16:46", "17:06", "17:26", "17:46",
-				 "18:06", "18:26", "18:46", "19:06", "19:26", "19:41", "20:08"};
+				 "18:06", "18:26", "18:46", "19:06", "19:26", "19:41", "20:06"};
 		
 		String[] h5_r_d = new String[]{"09:36", "10:36", "11:36", "13:36", "14:36",
 				"15:36", "16:36", "17:36", "18:36", "19:36"};
+		
+		
+		// LIGNE 6 - ALLER		
+		LineStation ls6a1 = new LineStation(l6, deGaulle, "A", 1);
+		LineStation ls6a2 = new LineStation(l6, aout22, "A", 2);
+		LineStation ls6a3 = new LineStation(l6, claparede, "A", 3);
+		LineStation ls6a4 = new LineStation(l6, arenesPiscine, "A", 4);
+		LineStation ls6a5 = new LineStation(l6, laDullague, "A", 5);
+		LineStation ls6a6 = new LineStation(l6, centreSocial, "A", 6);
+		LineStation ls6a7 = new LineStation(l6, perrin, "A", 7);
+		LineStation ls6a8 = new LineStation(l6, saintPieX, "A", 8);
+		LineStation ls6a9 = new LineStation(l6, carrefourDuGausselet, "A", 9);
+		LineStation ls6a10 = new LineStation(l6, voieDomitienne, "A", 10);
+		LineStation ls6a11 = new LineStation(l6, heilbronn, "A", 11);
+		LineStation ls6a12 = new LineStation(l6, lesJasmins, "A", 12);
+		LineStation ls6a13 = new LineStation(l6, lesTamaris, "A", 13);
+		LineStation ls6a14 = new LineStation(l6, lesTertres, "A", 14);
+		LineStation ls6a15 = new LineStation(l6, dorat, "A", 15);
+		LineStation ls6a16 = new LineStation(l6, lachenal, "A", 16);
+		LineStation ls6a17 = new LineStation(l6, capendeguy, "A", 17);
+		LineStation ls6a18 = new LineStation(l6, tourDeMail, "A", 18);
+		LineStation ls6a19 = new LineStation(l6, bouin, "A", 19);
+		LineStation ls6a20 = new LineStation(l6, deveze, "A", 20);
+		LineStation ls6a21 = new LineStation(l6, capiscol, "A", 21);
+		LineStation ls6a22 = new LineStation(l6, acacias, "A", 22);
 				
 		
 		// LIGNE 15 - ALLER
@@ -799,27 +846,27 @@ public class Servlet extends HttpServlet {
 				
 				// LIGNE 5 - ALLER - LV
 				new Schedule(ls5a1, lv, h5_a_lv),
-				new Schedule(ls5a2, lv, add(h5_a_lv, 1, 27, 2, 47, 2, 48, 1)),
-				new Schedule(ls5a3, lv, add(h5_a_lv, 3, 27, 4, 47, 4, 48, 3)),
-				new Schedule(ls5a4, lv, add(h5_a_lv, 4, 27, 6, 47, 6, 48, 4)),
-				new Schedule(ls5a5, lv, add(h5_a_lv, 6, 27, 8, 47, 8, 48, 6)),
-				new Schedule(ls5a6, lv, add(h5_a_lv, 7, 27, 9, 47, 9, 48, 7)),
-				new Schedule(ls5a7, lv, add(h5_a_lv, 8, 27, 11, 47, 11, 48,8 )),
-				new Schedule(ls5a8, lv, add(h5_a_lv, 9, 27, 12, 47, 12, 48, 9)),
-				new Schedule(ls5a9, lv, add(h5_a_lv, 10, 27, 13, 47, 13, 48, 10)),
-				new Schedule(ls5a10, lv, add(h5_a_lv, 11, 27, 14, 47, 14, 48, 11)),
-				new Schedule(ls5a11, lv, add(h5_a_lv, 12, 27, 15, 47, 15, 48, 12)),
-				new Schedule(ls5a12, lv, add(h5_a_lv, 13, 27, 16, 47, 16, 48, 13)),
-				new Schedule(ls5a13, lv, add(h5_a_lv, 14, 27, 18, 47, 17, 48, 14)),
-				new Schedule(ls5a14, lv, add(h5_a_lv, 15, 27, 19, 47, 18, 48, 15)),
-				new Schedule(ls5a15, lv, add(h5_a_lv, 16, 27, 20, 47, 19, 48, 16)),
-				new Schedule(ls5a16, lv, add(h5_a_lv, 17, 27, 21, 47, 20, 48, 17)),
-				new Schedule(ls5a17, lv, add(h5_a_lv, 18, 27, 22, 47, 21, 48, 18)),
-				new Schedule(ls5a18, lv, add(h5_a_lv, 20, 27, 24, 47, 23, 48, 20)),
-				new Schedule(ls5a19, lv, add(h5_a_lv, 20, 27, 25, 47, 23, 48, 20)),
-				new Schedule(ls5a20, lv, add(h5_a_lv, 22, 27, 26, 47, 25, 48, 22)),
-				new Schedule(ls5a21, lv, add(h5_a_lv, 23, 27, 28, 47, 26, 48, 23)),
-				new Schedule(ls5a22, lv, add(h5_a_lv, 24, 27, 30, 47, 27, 48, 24)),
+				new Schedule(ls5a2, lv, add(h5_a_lv, 1, 28, 2, 47, 2, 48, 1)),
+				new Schedule(ls5a3, lv, add(h5_a_lv, 3, 28, 4, 47, 4, 48, 3)),
+				new Schedule(ls5a4, lv, add(h5_a_lv, 4, 28, 6, 47, 6, 48, 4)),
+				new Schedule(ls5a5, lv, add(h5_a_lv, 6, 28, 8, 47, 8, 48, 6)),
+				new Schedule(ls5a6, lv, add(h5_a_lv, 7, 28, 9, 47, 9, 48, 7)),
+				new Schedule(ls5a7, lv, add(h5_a_lv, 8, 28, 11, 47, 11, 48,8 )),
+				new Schedule(ls5a8, lv, add(h5_a_lv, 9, 28, 12, 47, 12, 48, 9)),
+				new Schedule(ls5a9, lv, add(h5_a_lv, 10, 28, 13, 47, 13, 48, 10)),
+				new Schedule(ls5a10, lv, add(h5_a_lv, 11, 28, 14, 47, 14, 48, 11)),
+				new Schedule(ls5a11, lv, add(h5_a_lv, 12, 28, 15, 47, 15, 48, 12)),
+				new Schedule(ls5a12, lv, add(h5_a_lv, 13, 28, 16, 47, 16, 48, 13)),
+				new Schedule(ls5a13, lv, add(h5_a_lv, 14, 28, 18, 47, 17, 48, 14)),
+				new Schedule(ls5a14, lv, add(h5_a_lv, 15, 28, 19, 47, 18, 48, 15)),
+				new Schedule(ls5a15, lv, add(h5_a_lv, 16, 28, 20, 47, 19, 48, 16)),
+				new Schedule(ls5a16, lv, add(h5_a_lv, 17, 28, 21, 47, 20, 48, 17)),
+				new Schedule(ls5a17, lv, add(h5_a_lv, 18, 28, 22, 47, 21, 48, 18)),
+				new Schedule(ls5a18, lv, add(h5_a_lv, 20, 28, 24, 47, 23, 48, 20)),
+				new Schedule(ls5a19, lv, add(h5_a_lv, 20, 28, 25, 47, 23, 48, 20)),
+				new Schedule(ls5a20, lv, add(h5_a_lv, 22, 28, 26, 47, 25, 48, 22)),
+				new Schedule(ls5a21, lv, add(h5_a_lv, 23, 28, 28, 47, 26, 48, 23)),
+				new Schedule(ls5a22, lv, add(h5_a_lv, 24, 28, 30, 47, 27, 48, 24)),
 				
 				// LIGNE 5 - ALLER - S
 				new Schedule(ls5a1, s, h5_a_s),
@@ -1052,13 +1099,13 @@ public class Servlet extends HttpServlet {
 	
 	private String[] add(String[] tab, int minutesAvant, int index, int minutesApres) throws ParseException {
 		String[] resultat = new String[tab.length];
-		for (int i=0 ; i < index ; i++) {
+		for (int i=0 ; i < index-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesAvant);
 			resultat[i] = df.format(c.getTime());
 		}
-		for (int i=index ; i < tab.length ; i++) {
+		for (int i=index-1 ; i < tab.length ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesApres);
@@ -1069,19 +1116,19 @@ public class Servlet extends HttpServlet {
 	
 	private String[] add(String[] tab, int minutesAvant, int i1, int minutesEntre, int i2, int minutesApres) throws ParseException {
 		String[] resultat = new String[tab.length];
-		for (int i=0 ; i < i1 ; i++) {
+		for (int i=0 ; i < i1-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesAvant);
 			resultat[i] = df.format(c.getTime());
 		}
-		for (int i=i1 ; i < i2 ; i++) {
+		for (int i=i1-1 ; i < i2-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesEntre);
 			resultat[i] = df.format(c.getTime());
 		}
-		for (int i=i2 ; i < tab.length ; i++) {
+		for (int i=i2-1 ; i < tab.length ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesApres);
@@ -1093,25 +1140,25 @@ public class Servlet extends HttpServlet {
 	private String[] add(String[] tab, int minutesAvant, int i1, int minutesEntre1, int i2, int minutesEntre2,
 			int i3, int minutesApres) throws ParseException {
 		String[] resultat = new String[tab.length];
-		for (int i=0 ; i < i1 ; i++) {
+		for (int i=0 ; i < i1-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesAvant);
 			resultat[i] = df.format(c.getTime());
 		}
-		for (int i=i1 ; i < i2 ; i++) {
+		for (int i=i1-1 ; i < i2-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesEntre1);
 			resultat[i] = df.format(c.getTime());
 		}
-		for (int i=i2 ; i < i3 ; i++) {
+		for (int i=i2-1 ; i < i3-1 ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesEntre2);
 			resultat[i] = df.format(c.getTime());
 		} 
-		for (int i=i3 ; i < tab.length ; i++) {
+		for (int i=i3-1 ; i < tab.length ; i++) {
 			Calendar c = Calendar.getInstance();
 			c.setTime(df.parse(tab[i]));
 			c.add(Calendar.MINUTE, minutesApres);
