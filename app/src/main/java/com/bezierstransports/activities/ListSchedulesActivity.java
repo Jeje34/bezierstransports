@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.R;
 import com.bezierstransports.adapters.AdapterSchedule;
 import com.bezierstransports.database.ScheduleDAO;
@@ -32,6 +34,8 @@ public class ListSchedulesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_schedules_activity);
 
@@ -41,12 +45,10 @@ public class ListSchedulesActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.ligne) + " " + lineStation.getLine().getLineNumber() +
         " - " + lineStation.getStation().getStationName());
+        BeziersTransports.initActionBar(this, lineStation.getLine().getColor());
 
         listViewSchedules = (ListView) findViewById(R.id.listViewSchedules);
         radioGroupPeriod = (RadioGroup) findViewById(R.id.radio_group_period);
-
-
-
         radioButtonAller = (RadioButton) findViewById(R.id.radio_button_aller_2);
         radioButtonRetour = (RadioButton) findViewById(R.id.radio_button_retour_2);
 
@@ -73,24 +75,22 @@ public class ListSchedulesActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_list_schedules, menu);
         return true;
     }
 
-    @Override
+
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_upload_schedules:
+            case R.id.action_map:
+                Intent i = new Intent(ListSchedulesActivity.this, LineMapActivity.class);
+                i.putExtra("lineStation", lineStation);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void addRadioButtons() {

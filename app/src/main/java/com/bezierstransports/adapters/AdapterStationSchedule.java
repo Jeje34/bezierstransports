@@ -1,6 +1,7 @@
 package com.bezierstransports.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
                                   HashMap<LineStation, List<Schedule>> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
-
         this.listDataChild = listChildData;
 
         /* add a empty schedule at the beginning of the value list, to still
@@ -58,11 +58,11 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
         LayoutInflater infalInflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = infalInflater.inflate(R.layout.list_item, null);
-
         viewHolder.nextDepartureLabel = (TextView) convertView.findViewById(R.id.next_departure_label);
 
         // for the first child (an empty Schedule)...
         if (schedule.getSchedule() == null && childPosition == 0) {
+            convertView.setBackgroundColor(Color.parseColor("#FA5858"));
             if (this.getChildrenCount(groupPosition) == 1) {
                 // ...if no other children: display a message
                 viewHolder.nextDepartureLabel.setText(R.string.next_departure_tomorrow);
@@ -72,7 +72,8 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
             }
 
         } else {
-            // for other children, display time et time left
+            convertView.setBackgroundColor(Color.parseColor(schedule.getLineStation().getLine().getColor()));
+            // for other children, display time and time left
             if (childPosition == 1) {
                 viewHolder.nextDepartureLabel.setText(R.string.next_departure);
             } else if (childPosition == 2) {
@@ -143,6 +144,7 @@ public class AdapterStationSchedule extends BaseExpandableListAdapter {
         viewHolder.stationName = (TextView) convertView.findViewById(R.id.stationName);
         viewHolder.stationName.setTypeface(null, Typeface.BOLD);
         viewHolder.stationName.setText(lineStation.getStation().getStationName());
+        viewHolder.stationName.setTextColor(Color.parseColor(lineStation.getLine().getColor()));
 
         viewHolder.cityName = (TextView) convertView.findViewById(R.id.cityName);
         viewHolder.cityName.setText(lineStation.getStation().getCity().getCityName());

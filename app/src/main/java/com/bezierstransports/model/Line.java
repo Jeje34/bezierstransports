@@ -60,7 +60,8 @@ public class Line implements Parcelable {
 
     private Line(Parcel in) {
         this.lineNumber = in.readString();
-        this.lineName = in.readString();;
+        this.lineName = in.readString();
+        this.color = in.readString();
     }
 
     public int describeContents() {
@@ -70,6 +71,7 @@ public class Line implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(lineNumber);
         out.writeString(lineName);
+        out.writeString(color);
     }
 
     public static final Parcelable.Creator<Line> CREATOR = new Parcelable.Creator<Line>() {

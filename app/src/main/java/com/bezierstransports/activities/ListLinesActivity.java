@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.R;
 import com.bezierstransports.adapters.AdapterLine;
 import com.bezierstransports.database.LineDAO;
@@ -26,15 +28,19 @@ public class ListLinesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_lines_activity);
 
         setTitle("Béziers Transports");
+        BeziersTransports.initActionBar(this, "#83BD44");
+
         listViewLines = (ListView) findViewById(R.id.listViewLines);
 
         // first launch ever: get data
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("firstTime", false)) {
+        if (!prefs.getBoolean("firstTime", false)) {
             new GetDataTask(ListLinesActivity.this, listViewLines, adapterLine).execute();
             // mark first time has runned
             SharedPreferences.Editor editor = prefs.edit();
@@ -70,7 +76,15 @@ public class ListLinesActivity extends AppCompatActivity {
 
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_upload_schedules:
+            case R.id.action_map:
+                Intent i = new Intent(ListLinesActivity.this, LineMapActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

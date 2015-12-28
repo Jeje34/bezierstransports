@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
@@ -37,6 +38,8 @@ public class ListStationsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_stations_activity);
 
@@ -49,6 +52,7 @@ public class ListStationsActivity extends AppCompatActivity {
         line = (Line) i.getParcelableExtra("line");
 
         getData("A");
+        BeziersTransports.initActionBar(this, line.getColor());
 
         // split the name line to set 2 directions
         String[] parts = line.getLineName().split("- ");

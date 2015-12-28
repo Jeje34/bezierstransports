@@ -37,15 +37,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LineMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private Line line;
+    private Line line = null;
+    private Station closerStation = null;
+    private Location currentLocation = null;
     private ArrayList<Marker> markers = new ArrayList<>();
-
     private GoogleMap map;
     private LocationManager mLocationManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,14 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         // get the object line from the last activity
         Intent i = getIntent();
         line = (Line) i.getParcelableExtra("line");
-        line.setStations(StationDAO.getStationDAO().getStations(line));
+        if (line != null) {
+            line.setStations(StationDAO.getStationDAO().getStations(line));
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 1.0f, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10.0f, mLocationListener);
         }
 
         // map
@@ -68,10 +71,30 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
     }
 
+    private Station getCloserStation(List<Station> stations) {
+        float[] distanceResult = new float[2];
+        Station closer = stations.get(0);
+        Location.distanceBetween(currentLocation.getLatitude(), currentLocation.getLongitude(),
+                closer.getLatitude(), closer.getLongitude(), distanceResult);
+        float distanceMin = distanceResult[0];
+
+        for (Station s : stations) {
+            Location.distanceBetween(currentLocation.getLatitude(), currentLocation.getLongitude(),
+                    s.getLatitude(), s.getLongitude(), distanceResult);
+            if (distanceResult[0] < distanceMin) {
+                closer = s;
+                distanceMin = distanceResult[0];
+            }
+        }
+        return closer;
+    }
+
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            drawDirection(location);
+            currentLocation = location;
+            closerStation = getCloserStation(line.getStations());
+            drawDirection(location, closerStation);
         }
 
         public void onStatusChanged (String provider, int status, Bundle extras) {  }
@@ -108,7 +131,10 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         });
 
         // draw the lines on the map
-        drawLine1();
+        if (line.getLineNumber().equals("1")) {
+            drawLine1();
+        }
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -117,12 +143,11 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     }
 
-
-    private void drawDirection(Location current) {
+    // draw direction between current location and
+    private void drawDirection(Location current, Station station) {
         GoogleDirection.withServerKey("AIzaSyDkjdEZ74pmQFy5D3F6-YKE84KChZtAt6Y")
             .from(new LatLng(current.getLatitude(), current.getLongitude()))
-            .to(new LatLng(line.getStations().get(0).getLatitude(),
-                    line.getStations().get(0).getLongitude()))
+            .to(new LatLng(station.getLatitude(), station.getLongitude()))
                 .unit(Unit.METRIC)
                 .language(Language.FRENCH)
                 .avoid(AvoidType.FERRIES)

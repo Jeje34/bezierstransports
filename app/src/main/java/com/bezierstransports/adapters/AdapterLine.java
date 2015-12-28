@@ -37,9 +37,17 @@ public class AdapterLine extends ArrayAdapter<Line> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.bigLineNumber.setText(line.getLineNumber());
-        viewHolder.bigLineNumber.setTextColor(Color.parseColor(line.getColor()));
+
+        if (line.getLineNumber().length() == 1) {
+            viewHolder.bigLineNumber.setText(line.getLineNumber());
+        } else {
+            viewHolder.bigLineNumber.setText(line.getLineNumber());
+        }
+
+        viewHolder.bigLineNumber.setBackgroundColor(Color.parseColor(line.getColor()));
+        viewHolder.bigLineNumber.setTextColor(Color.WHITE);
         viewHolder.lineNumber.setText("Ligne " + line.getLineNumber());
+        viewHolder.lineNumber.setTextColor(Color.parseColor(line.getColor()));
         viewHolder.lineName.setText(line.getLineName());
         return convertView;
     }
