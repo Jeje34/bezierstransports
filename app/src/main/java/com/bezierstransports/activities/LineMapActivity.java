@@ -24,12 +24,16 @@ import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.R;
 import com.bezierstransports.database.StationDAO;
 import com.bezierstransports.model.Line;
+import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Station;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -42,6 +46,8 @@ import java.util.List;
 public class LineMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private Line line = null;
+    Line busLine = null;
+    private LineStation lineStation = null;
     private Station closerStation = null;
     private Location currentLocation = null;
     private ArrayList<Marker> markers = new ArrayList<>();
@@ -58,7 +64,15 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         line = (Line) i.getParcelableExtra("line");
         if (line != null) {
             line.setStations(StationDAO.getStationDAO().getStations(line));
+            busLine = line;
         }
+        lineStation = (LineStation) i.getParcelableExtra("lineStation");
+        if (lineStation != null) {
+            lineStation.getLine().setStations(StationDAO.getStationDAO().getStations(lineStation.getLine()));
+            busLine = lineStation.getLine();
+        }
+
+
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -93,8 +107,12 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         @Override
         public void onLocationChanged(final Location location) {
             currentLocation = location;
-            closerStation = getCloserStation(line.getStations());
-            drawDirection(location, closerStation);
+            if (line != null) {
+                closerStation = getCloserStation(line.getStations());
+                drawDirection(location, closerStation);
+            } else if (lineStation != null) {
+                drawDirection(location, lineStation.getStation());
+            }
         }
 
         public void onStatusChanged (String provider, int status, Bundle extras) {  }
@@ -108,33 +126,32 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         this.map = retMap;
 
-        /* add markers for each station of the line on the map
-        and save marker in a list */
-        for (Station station : line.getStations()) {
-            markers.add(map.addMarker(new MarkerOptions()
-                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
-                    .title(station.getStationName())));
-        }
-
-        // zoom and move camera to see all the markers
-        map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            public void onMapLoaded() {
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for (Marker marker : markers) {
-                    builder.include(marker.getPosition());
+        List<Station> stations = new ArrayList<Station>();
+        if (line != null) {
+            stations = line.getStations();
+            drawMarkers(stations);
+            // zoom and move camera to see all stations of the line
+            map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                public void onMapLoaded() {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (Marker marker : markers) {
+                        builder.include(marker.getPosition());
+                    }
+                    LatLngBounds bounds = builder.build();
+                    int padding = 0;
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    map.moveCamera(cu);
                 }
-                LatLngBounds bounds = builder.build();
-                int padding = 0;
-                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                map.moveCamera(cu);
-            }
-        });
-
-        // draw the lines on the map
-        if (line.getLineNumber().equals("1")) {
-            drawLine1();
+            });
+        } else if (lineStation != null) {
+            stations = lineStation.getLine().getStations();
+            drawMarkers(stations);
+            // zoom on station
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(
+                    new LatLng(lineStation.getStation().getLatitude(), lineStation.getStation().getLongitude()))
+                    .zoom(17).build();
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
-
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -142,6 +159,26 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
     }
+
+
+    private void drawMarkers(List<Station> stations) {
+        BitmapDescriptor bd = null;
+        for (Station station : stations) {
+            // select color of marker and draw line
+            if (busLine.getLineNumber().equals("1")) {
+                drawLine1(busLine.getColor());
+                bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
+            }
+
+            /* add markers for each station of the line on the map
+            and save marker in a list */
+            markers.add(map.addMarker(new MarkerOptions()
+                    .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                    .title(station.getStationName())
+                    .icon(bd)));
+        }
+    }
+
 
     // draw direction between current location and
     private void drawDirection(Location current, Station station) {
@@ -168,13 +205,12 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
                     }
 
                     public void onDirectionFailure(Throwable t) {
-                        // Do something
                     }
             });
     }
 
 
-    private void drawLine1() {
+    private void drawLine1(String color) {
         PolylineOptions rectOptions = new PolylineOptions()
                 .add(new LatLng(43.34576, 3.217365))
                 .add(new LatLng(43.345954, 3.216877))
@@ -207,7 +243,7 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .add(new LatLng(43.361952, 3.232994))
                 .add(new LatLng(43.362395, 3.231827))
                 .width(5)
-                .color(Color.BLUE)
+                .color(Color.parseColor(color))
                 .geodesic(true);
 
         map.addPolyline(rectOptions);
