@@ -22,6 +22,7 @@ import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.util.DirectionConverter;
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.R;
+import com.bezierstransports.database.LineStationDAO;
 import com.bezierstransports.database.StationDAO;
 import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
@@ -46,7 +47,9 @@ import java.util.List;
 public class LineMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private Line line = null;
-    Line busLine = null;
+    private Line busLine = null;
+    private ArrayList<LineStation> listLineStationA;
+    private ArrayList<LineStation> listLineStationR;
     private LineStation lineStation = null;
     private Station closerStation = null;
     private Location currentLocation = null;
@@ -71,8 +74,8 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
             lineStation.getLine().setStations(StationDAO.getStationDAO().getStations(lineStation.getLine()));
             busLine = lineStation.getLine();
         }
-
-
+        listLineStationA = LineStationDAO.getLineStationDAO().getLineStations(busLine, "A");
+        listLineStationR = LineStationDAO.getLineStationDAO().getLineStations(busLine, "R");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -130,6 +133,8 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         if (line != null) {
             stations = line.getStations();
             drawMarkers(stations);
+            drawLine(listLineStationA, busLine.getColor());
+            drawLine(listLineStationR, busLine.getColor());
             // zoom and move camera to see all stations of the line
             map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 public void onMapLoaded() {
@@ -165,9 +170,15 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         BitmapDescriptor bd = null;
         for (Station station : stations) {
             // select color of marker and draw line
-            if (busLine.getLineNumber().equals("1")) {
-                drawLine1(busLine.getColor());
-                bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
+            switch (busLine.getLineNumber()) {
+                case "1":
+                    bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN);
+                    break;
+                case "2":
+                    bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+                    break;
+                default:
+                    bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
             }
 
             /* add markers for each station of the line on the map
@@ -206,46 +217,39 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
 
                     public void onDirectionFailure(Throwable t) {
                     }
-            });
+                });
     }
 
 
-    private void drawLine1(String color) {
-        PolylineOptions rectOptions = new PolylineOptions()
-                .add(new LatLng(43.34576, 3.217365))
-                .add(new LatLng(43.345954, 3.216877))
-                .add(new LatLng(43.348932, 3.220735))
-                .add(new LatLng(43.350356, 3.218777))
-                .add(new LatLng(43.350904, 3.219306))
-                .add(new LatLng(43.351731, 3.220312))
-                .add(new LatLng(43.353076, 3.221369))
-                .add(new LatLng(43.355371, 3.222028))
-                .add(new LatLng(43.356609, 3.221757))
-                .add(new LatLng(43.357030, 3.222071))
-                .add(new LatLng(43.357773, 3.224026))
-                .add(new LatLng(43.358372, 3.224686))
-                .add(new LatLng(43.358975, 3.224874))
-                .add(new LatLng(43.359282, 3.224812))
-                .add(new LatLng(43.360007, 3.225461))
-                .add(new LatLng(43.359614, 3.226691))
-                .add(new LatLng(43.358185, 3.225621))
-                .add(new LatLng(43.355104, 3.226459))
-                .add(new LatLng(43.355143, 3.226598))
-                .add(new LatLng(43.355880, 3.227161))
-                .add(new LatLng(43.357128, 3.227805))
-                .add(new LatLng(43.361153, 3.230895))
-                .add(new LatLng(43.360295, 3.233663))
-                .add(new LatLng(43.359577, 3.234275 ))
-                .add(new LatLng(43.359273, 3.234699))
-                .add(new LatLng(43.360178, 3.235992))
-                .add(new LatLng(43.361274, 3.235461))
-                .add(new LatLng(43.361929, 3.234324))
-                .add(new LatLng(43.361952, 3.232994))
-                .add(new LatLng(43.362395, 3.231827))
-                .width(5)
-                .color(Color.parseColor(color))
-                .geodesic(true);
+    private void drawLine(ArrayList<LineStation> listLineStation, final String color) {
+        for (int i = 0; i < listLineStation.size() - 1; i++) {
+            GoogleDirection.withServerKey("AIzaSyDkjdEZ74pmQFy5D3F6-YKE84KChZtAt6Y")
+                    .from(new LatLng(listLineStation.get(i).getStation().getLatitude(),
+                            listLineStation.get(i).getStation().getLongitude()))
+                    .to(new LatLng(listLineStation.get(i + 1).getStation().getLatitude(),
+                            listLineStation.get(i + 1).getStation().getLongitude()))
+                    .unit(Unit.METRIC)
+                    .language(Language.FRENCH)
+                    .avoid(AvoidType.FERRIES)
+                    .avoid(AvoidType.HIGHWAYS)
+                    .execute(new DirectionCallback() {
+                        public void onDirectionSuccess(Direction direction) {
+                            if (direction.isOK()) {
+                                Route route = direction.getRouteList().get(0);
+                                Leg leg = route.getLegList().get(0);
+                                ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
+                                PolylineOptions polylineOptions = DirectionConverter.createPolyline(BeziersTransports.getAppContext(),
+                                        directionPositionList, 5, Color.parseColor(color));
+                                map.addPolyline(polylineOptions);
 
-        map.addPolyline(rectOptions);
+                            } else {
+                                // Do something
+                            }
+                        }
+
+                        public void onDirectionFailure(Throwable t) {
+                        }
+                    });
+        }
     }
 }
