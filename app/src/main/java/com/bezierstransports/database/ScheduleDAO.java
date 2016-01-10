@@ -40,8 +40,37 @@ public class ScheduleDAO {
         return ScheduleDAO.scheduleDAO;
     }
 
+    public void addSchedules(ArrayList<Schedule> schedulesList) {
+        SQLiteDatabase db = this.dh.getWritableDatabase();
+        db.beginTransactionNonExclusive();
 
-    public void addSchedule(Schedule schedule)  {
+        for (Schedule schedule : schedulesList) {
+            ContentValues values = new ContentValues();
+
+            // insert line and station
+            LineStationDAO.getLineStationDAO().addLineStation(db, schedule.getLineStation());
+
+
+            // insert period
+            PeriodDAO.getPeriodDAO().addPeriod(db, schedule.getPeriod());
+
+            values.put(DatabaseHandler.KEY_LINENUMBER, schedule.getLineStation().getLine().getLineNumber());
+            values.put(DatabaseHandler.KEY_IDSTATION, schedule.getLineStation().getStation().getId());
+            values.put(DatabaseHandler.KEY_DIRECTION, schedule.getLineStation().getDirection());
+            values.put(DatabaseHandler.KEY_IDPERIOD, schedule.getPeriod().getId());
+            values.put(DatabaseHandler.KEY_SCHEDULE, BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
+
+            // insert the schedule in the DB
+            db.insert(DatabaseHandler.TABLE_SCHEDULE, null, values);
+
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+    }
+
+    /*public void addSchedule(Schedule schedule)  {
         SQLiteDatabase db = this.dh.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -59,8 +88,8 @@ public class ScheduleDAO {
 
         // insert the schedule in the DB
         db.insert(DatabaseHandler.TABLE_SCHEDULE, null, values);
-        db.close();
-    }
+
+    }*/
 
 
     public List<Schedule> get3NextDepartures(LineStation ls) {
@@ -153,4 +182,6 @@ public class ScheduleDAO {
 
         return schedulesList;
     }
+
+
 }

@@ -36,18 +36,19 @@ public final class LineStationDAO {
         return LineStationDAO.lineStationDAO;
     }
 
-    public void addLineStation(LineStation lineStation)  {
-        SQLiteDatabase db = this.dh.getWritableDatabase();
+    public void addLineStation(SQLiteDatabase db, LineStation lineStation) {
+        db.beginTransactionNonExclusive();
         ContentValues values = new ContentValues();
 
         // insert line
-        LineDAO.getLineDAO().addLine(lineStation.getLine());
+        LineDAO.getLineDAO().addLine(db, lineStation.getLine());
 
         // insert station
-        StationDAO.getStationDAO().addStation(lineStation.getStation());
+        StationDAO.getStationDAO().addStation(db, lineStation.getStation());
+
 
         // insert lineStation (only if it does not exist)
-        if (dh.getCount(DatabaseHandler.TABLE_LINE_STATION, DatabaseHandler.KEY_LINENUMBER + " = ? AND " +
+        if (dh.getCount(db, DatabaseHandler.TABLE_LINE_STATION, DatabaseHandler.KEY_LINENUMBER + " = ? AND " +
                         DatabaseHandler.KEY_IDSTATION + " = ? AND " + DatabaseHandler.KEY_DIRECTION + " = ?" ,
                 new String[]{lineStation.getLine().getLineNumber(), String.valueOf(lineStation.getStation().getId()),
                         lineStation.getDirection()}) == 0) {
@@ -56,8 +57,10 @@ public final class LineStationDAO {
             values.put(DatabaseHandler.KEY_DIRECTION, lineStation.getDirection());
             values.put(DatabaseHandler.KEY_ORDRE, lineStation.getOrdre());
             db.insert(DatabaseHandler.TABLE_LINE_STATION, null, values);
-            db.close();
         }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     // get the LineStation list that matches with line and direction given

@@ -40,13 +40,15 @@ public final class StationDAO {
 
 
     // add a bus station into the database
-    public void addStation(Station station)  {
+    public void addStation(SQLiteDatabase db, Station station) {
+
+        db.beginTransactionNonExclusive();
+
         // insert only if the value does not exist
-        if (dh.getCount(DatabaseHandler.TABLE_STATION, DatabaseHandler.KEY_ID + " = ? ", new String[]{String.valueOf(station.getId())}) == 0) {
-            SQLiteDatabase db = this.dh.getWritableDatabase();
+        if (dh.getCount(db, DatabaseHandler.TABLE_STATION, DatabaseHandler.KEY_ID + " = ? ", new String[]{String.valueOf(station.getId())}) == 0) {
 
             //insert city
-            CityDAO.getCityDAO().addCity(station.getCity());
+            CityDAO.getCityDAO().addCity(db, station.getCity());
 
             ContentValues values = new ContentValues();
             values.put(DatabaseHandler.KEY_ID, station.getId());
@@ -56,10 +58,11 @@ public final class StationDAO {
             values.put(DatabaseHandler.KEY_IDCITY, station.getCity().getId());
 
             // insert the bus station in the DB and get ID
-            station.setId(db.insert(DatabaseHandler.TABLE_STATION, null, values));
-
-            db.close();
+            db.insert(DatabaseHandler.TABLE_STATION, null, values);
         }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     // get the stations list of the line given

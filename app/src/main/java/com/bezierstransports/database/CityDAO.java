@@ -32,20 +32,23 @@ public class CityDAO {
     }
 
     // add a city into the database
-    public void addCity(City city)  {
+    public void addCity(SQLiteDatabase db, City city) {
+
+        db.beginTransactionNonExclusive();
 
         // insert only if the value does not exist
-        if (dh.getCount(DatabaseHandler.TABLE_CITY, DatabaseHandler.KEY_ID + " = ?",
+        if (dh.getCount(db, DatabaseHandler.TABLE_CITY, DatabaseHandler.KEY_ID + " = ?",
                 new String[]{String.valueOf(city.getId())}) == 0) {
-            SQLiteDatabase db = this.dh.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DatabaseHandler.KEY_ID, city.getId());
             values.put(DatabaseHandler.KEY_CITYNAME, city.getCityName());
 
             // insert the city in the DB and get ID
-            city.setId(db.insert(DatabaseHandler.TABLE_CITY, null, values));
-            db.close();
+            db.insert(DatabaseHandler.TABLE_CITY, null, values);
         }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     // get the city that matches with ID given

@@ -110,10 +110,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public int getCount(String table, String selection, String[] selectionArgs) {
+    public int getCount(SQLiteDatabase db, String table, String selection, String[] selectionArgs) {
         Cursor c = null;
         try {
-            SQLiteDatabase db = getReadableDatabase();
             String query = "SELECT COUNT(*) FROM " + table + " WHERE " + selection;
             c = db.rawQuery(query, selectionArgs);
             if (c.moveToFirst()) {

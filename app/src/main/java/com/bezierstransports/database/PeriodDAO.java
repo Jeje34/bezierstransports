@@ -32,22 +32,25 @@ public class PeriodDAO {
     }
 
     // add a period into the database
-    public void addPeriod(Period period)  {
+    public void addPeriod(SQLiteDatabase db, Period period) {
+
+        db.beginTransactionNonExclusive();
 
         // insert only if the value does not exist
-        if (dh.getCount(DatabaseHandler.TABLE_PERIOD, DatabaseHandler.KEY_ID + " = ?",
+        if (dh.getCount(db, DatabaseHandler.TABLE_PERIOD, DatabaseHandler.KEY_ID + " = ?",
                 new String[]{String.valueOf(period.getId())}) == 0) {
 
-            SQLiteDatabase db = this.dh.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(DatabaseHandler.KEY_ID, period.getId());
             values.put(DatabaseHandler.KEY_PERIOD, period.getPeriod());
             values.put(DatabaseHandler.KEY_SEASON, period.getSeason());
 
             // insert the period in the DB and get ID
-            period.setId(db.insert(DatabaseHandler.TABLE_PERIOD, null, values));
-            db.close();
+            db.insert(DatabaseHandler.TABLE_PERIOD, null, values);
         }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
 

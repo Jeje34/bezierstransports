@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,11 +65,15 @@ public class WebService {
                 // delete the database
                 BeziersTransports.getAppContext().deleteDatabase(DatabaseHandler.DATABASE_NAME);
                 // write all objects in database
+
+                ArrayList<Schedule> schedulesList = new ArrayList<Schedule>();
                 for (ScheduleTemp st : response.schedulesArray) {
                     for (Date s : st.schedules) {
-                        ScheduleDAO.getScheduleDAO().addSchedule(new Schedule(st.lineStation, st.period, s));
+                        schedulesList.add(new Schedule(st.lineStation, st.period, s));
                     }
                 }
+
+                ScheduleDAO.getScheduleDAO().addSchedules(schedulesList);
             }
         } catch (Exception e) {
             Log.e("WebService", e.getMessage());
