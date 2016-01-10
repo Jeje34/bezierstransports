@@ -143,7 +143,6 @@
     <orderEntry type="library" exported="" name="parceler-api-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appinvite-8.4.0" level="project" />
-    <orderEntry type="library" exported="" name="sqliteassethelper-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-safetynet-8.4.0" level="project" />
     <orderEntry type="library" exported="" name="logging-interceptor-2.6.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-appstate-8.4.0" level="project" />

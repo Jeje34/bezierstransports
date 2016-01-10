@@ -42,8 +42,6 @@ public final class StationDAO {
     // add a bus station into the database
     public void addStation(SQLiteDatabase db, Station station) {
 
-        db.beginTransactionNonExclusive();
-
         // insert only if the value does not exist
         if (dh.getCount(db, DatabaseHandler.TABLE_STATION, DatabaseHandler.KEY_ID + " = ? ", new String[]{String.valueOf(station.getId())}) == 0) {
 
@@ -60,9 +58,6 @@ public final class StationDAO {
             // insert the bus station in the DB and get ID
             db.insert(DatabaseHandler.TABLE_STATION, null, values);
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     // get the stations list of the line given

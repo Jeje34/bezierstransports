@@ -38,7 +38,6 @@ public final class LineDAO {
 
     // add a bus line into the database
     public void addLine(SQLiteDatabase db, Line line) {
-        db.beginTransactionNonExclusive();
 
         // insert only if the value does not exist
         if (dh.getCount(db, DatabaseHandler.TABLE_LINE, DatabaseHandler.KEY_LINENUMBER + " = ?",
@@ -50,9 +49,6 @@ public final class LineDAO {
             // insert the bus line in the DB
             db.insert(DatabaseHandler.TABLE_LINE, null, values);
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     // get all the bus lines of the database

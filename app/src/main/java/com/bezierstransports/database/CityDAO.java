@@ -34,8 +34,6 @@ public class CityDAO {
     // add a city into the database
     public void addCity(SQLiteDatabase db, City city) {
 
-        db.beginTransactionNonExclusive();
-
         // insert only if the value does not exist
         if (dh.getCount(db, DatabaseHandler.TABLE_CITY, DatabaseHandler.KEY_ID + " = ?",
                 new String[]{String.valueOf(city.getId())}) == 0) {
@@ -47,8 +45,6 @@ public class CityDAO {
             db.insert(DatabaseHandler.TABLE_CITY, null, values);
         }
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     // get the city that matches with ID given

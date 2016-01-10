@@ -37,7 +37,6 @@ public final class LineStationDAO {
     }
 
     public void addLineStation(SQLiteDatabase db, LineStation lineStation) {
-        db.beginTransactionNonExclusive();
         ContentValues values = new ContentValues();
 
         // insert line
@@ -58,9 +57,6 @@ public final class LineStationDAO {
             values.put(DatabaseHandler.KEY_ORDRE, lineStation.getOrdre());
             db.insert(DatabaseHandler.TABLE_LINE_STATION, null, values);
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
     // get the LineStation list that matches with line and direction given

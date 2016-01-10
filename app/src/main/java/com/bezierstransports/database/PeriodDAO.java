@@ -34,8 +34,6 @@ public class PeriodDAO {
     // add a period into the database
     public void addPeriod(SQLiteDatabase db, Period period) {
 
-        db.beginTransactionNonExclusive();
-
         // insert only if the value does not exist
         if (dh.getCount(db, DatabaseHandler.TABLE_PERIOD, DatabaseHandler.KEY_ID + " = ?",
                 new String[]{String.valueOf(period.getId())}) == 0) {
@@ -48,9 +46,6 @@ public class PeriodDAO {
             // insert the period in the DB and get ID
             db.insert(DatabaseHandler.TABLE_PERIOD, null, values);
         }
-
-        db.setTransactionSuccessful();
-        db.endTransaction();
     }
 
 
