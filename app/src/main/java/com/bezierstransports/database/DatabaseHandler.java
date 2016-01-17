@@ -71,7 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_LINE_STATION_TABLE = "CREATE TABLE " + TABLE_LINE_STATION + "("  +
                 KEY_LINENUMBER + "  VARCHAR(4)," +
                 KEY_IDSTATION + " INTEGER," +
-                KEY_DIRECTION + " VARCHAR(100)," +
+                KEY_DIRECTION + " VARCHAR(1)," +
                 KEY_ORDRE + " INTEGER(2) NOT NULL," +
                 " PRIMARY KEY (" + KEY_LINENUMBER + ", " + KEY_IDSTATION + ", " + KEY_DIRECTION + ")," +
                 " FOREIGN KEY ("+ KEY_LINENUMBER + ") REFERENCES " + TABLE_LINE +"(" + KEY_LINENUMBER + ")," +
@@ -88,7 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 KEY_LINENUMBER + "  VARCHAR(4)," +
                 KEY_IDSTATION + " INTEGER," +
                 KEY_IDPERIOD + " INTEGER," +
-                KEY_DIRECTION + " VARCHAR(100)," +
+                KEY_DIRECTION + " VARCHAR(1)," +
                 KEY_SCHEDULE + " TIME," +
                 " PRIMARY KEY (" + KEY_LINENUMBER + ", " + KEY_IDSTATION + ", " + KEY_IDPERIOD + ", "
                 + KEY_DIRECTION + ", " + KEY_SCHEDULE + ")," +

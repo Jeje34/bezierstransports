@@ -1,9 +1,9 @@
 package com.bezierstransports.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.Period;
@@ -33,19 +33,14 @@ public class PeriodDAO {
 
     // add a period into the database
     public void addPeriod(SQLiteDatabase db, Period period) {
-
-        // insert only if the value does not exist
-        if (dh.getCount(db, DatabaseHandler.TABLE_PERIOD, DatabaseHandler.KEY_ID + " = ?",
-                new String[]{String.valueOf(period.getId())}) == 0) {
-
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHandler.KEY_ID, period.getId());
-            values.put(DatabaseHandler.KEY_PERIOD, period.getPeriod());
-            values.put(DatabaseHandler.KEY_SEASON, period.getSeason());
-
-            // insert the period in the DB and get ID
-            db.insert(DatabaseHandler.TABLE_PERIOD, null, values);
-        }
+        String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_PERIOD + " ( " + DatabaseHandler.KEY_ID + ","
+                + DatabaseHandler.KEY_PERIOD + ", " + DatabaseHandler.KEY_SEASON + ") VALUES (?, ?, ?)";
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindLong(1, period.getId());
+        stmt.bindString(2, period.getPeriod());
+        stmt.bindString(3, period.getSeason());
+        stmt.execute();
+        stmt.clearBindings();
     }
 
 

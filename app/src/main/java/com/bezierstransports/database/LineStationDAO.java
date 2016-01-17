@@ -1,9 +1,9 @@
 package com.bezierstransports.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.Line;
@@ -37,26 +37,22 @@ public final class LineStationDAO {
     }
 
     public void addLineStation(SQLiteDatabase db, LineStation lineStation) {
-        ContentValues values = new ContentValues();
 
         // insert line
         LineDAO.getLineDAO().addLine(db, lineStation.getLine());
 
         // insert station
         StationDAO.getStationDAO().addStation(db, lineStation.getStation());
-
-
-        // insert lineStation (only if it does not exist)
-        if (dh.getCount(db, DatabaseHandler.TABLE_LINE_STATION, DatabaseHandler.KEY_LINENUMBER + " = ? AND " +
-                        DatabaseHandler.KEY_IDSTATION + " = ? AND " + DatabaseHandler.KEY_DIRECTION + " = ?" ,
-                new String[]{lineStation.getLine().getLineNumber(), String.valueOf(lineStation.getStation().getId()),
-                        lineStation.getDirection()}) == 0) {
-            values.put(DatabaseHandler.KEY_LINENUMBER, lineStation.getLine().getLineNumber());
-            values.put(DatabaseHandler.KEY_IDSTATION, lineStation.getStation().getId());
-            values.put(DatabaseHandler.KEY_DIRECTION, lineStation.getDirection());
-            values.put(DatabaseHandler.KEY_ORDRE, lineStation.getOrdre());
-            db.insert(DatabaseHandler.TABLE_LINE_STATION, null, values);
-        }
+        String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_LINE_STATION + " ( " + DatabaseHandler.KEY_LINENUMBER +
+                ", " + DatabaseHandler.KEY_IDSTATION + ", " + DatabaseHandler.KEY_DIRECTION + ", " +
+                DatabaseHandler.KEY_ORDRE + ") VALUES (?, ?, ?, ?)";
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindString(1, lineStation.getLine().getLineNumber());
+        stmt.bindLong(2, lineStation.getStation().getId());
+        stmt.bindString(3, lineStation.getDirection());
+        stmt.bindLong(4, lineStation.getOrdre());
+        stmt.execute();
+        stmt.clearBindings();
     }
 
     // get the LineStation list that matches with line and direction given

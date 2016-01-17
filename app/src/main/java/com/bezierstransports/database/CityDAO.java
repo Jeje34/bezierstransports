@@ -1,9 +1,9 @@
 package com.bezierstransports.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.City;
@@ -33,18 +33,13 @@ public class CityDAO {
 
     // add a city into the database
     public void addCity(SQLiteDatabase db, City city) {
-
-        // insert only if the value does not exist
-        if (dh.getCount(db, DatabaseHandler.TABLE_CITY, DatabaseHandler.KEY_ID + " = ?",
-                new String[]{String.valueOf(city.getId())}) == 0) {
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHandler.KEY_ID, city.getId());
-            values.put(DatabaseHandler.KEY_CITYNAME, city.getCityName());
-
-            // insert the city in the DB and get ID
-            db.insert(DatabaseHandler.TABLE_CITY, null, values);
-        }
-
+        String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_CITY + " ( " + DatabaseHandler.KEY_ID + ","
+                + DatabaseHandler.KEY_CITYNAME + ") VALUES (?, ?)";
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindLong(1, city.getId());
+        stmt.bindString(2, city.getCityName());
+        stmt.execute();
+        stmt.clearBindings();
     }
 
     // get the city that matches with ID given

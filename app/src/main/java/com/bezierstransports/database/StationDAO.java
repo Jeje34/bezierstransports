@@ -1,9 +1,9 @@
 package com.bezierstransports.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.Line;
@@ -41,23 +41,20 @@ public final class StationDAO {
 
     // add a bus station into the database
     public void addStation(SQLiteDatabase db, Station station) {
-
-        // insert only if the value does not exist
-        if (dh.getCount(db, DatabaseHandler.TABLE_STATION, DatabaseHandler.KEY_ID + " = ? ", new String[]{String.valueOf(station.getId())}) == 0) {
-
             //insert city
             CityDAO.getCityDAO().addCity(db, station.getCity());
 
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHandler.KEY_ID, station.getId());
-            values.put(DatabaseHandler.KEY_STATIONNAME, station.getStationName());
-            values.put(DatabaseHandler.KEY_LATITUDE, station.getLatitude());
-            values.put(DatabaseHandler.KEY_LONGITUDE, station.getLongitude());
-            values.put(DatabaseHandler.KEY_IDCITY, station.getCity().getId());
-
-            // insert the bus station in the DB and get ID
-            db.insert(DatabaseHandler.TABLE_STATION, null, values);
-        }
+        String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_STATION + " ( " + DatabaseHandler.KEY_ID + ","
+                + DatabaseHandler.KEY_STATIONNAME + ", " + DatabaseHandler.KEY_LATITUDE + ", " + DatabaseHandler.KEY_LONGITUDE +
+                ", " + DatabaseHandler.KEY_IDCITY + ") VALUES (?, ?, ?, ?, ?)";
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.bindLong(1, station.getId());
+        stmt.bindString(2, station.getStationName());
+        stmt.bindDouble(3, station.getLatitude());
+        stmt.bindDouble(4, station.getLongitude());
+        stmt.bindLong(5, station.getCity().getId());
+        stmt.execute();
+        stmt.clearBindings();
     }
 
     // get the stations list of the line given

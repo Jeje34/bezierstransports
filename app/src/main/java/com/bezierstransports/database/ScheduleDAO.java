@@ -1,9 +1,9 @@
 package com.bezierstransports.database;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.model.LineStation;
@@ -45,24 +45,24 @@ public class ScheduleDAO {
         db.beginTransactionNonExclusive();
 
         for (Schedule schedule : schedulesList) {
-            ContentValues values = new ContentValues();
 
             // insert line and station
             LineStationDAO.getLineStationDAO().addLineStation(db, schedule.getLineStation());
 
-
             // insert period
             PeriodDAO.getPeriodDAO().addPeriod(db, schedule.getPeriod());
 
-            values.put(DatabaseHandler.KEY_LINENUMBER, schedule.getLineStation().getLine().getLineNumber());
-            values.put(DatabaseHandler.KEY_IDSTATION, schedule.getLineStation().getStation().getId());
-            values.put(DatabaseHandler.KEY_DIRECTION, schedule.getLineStation().getDirection());
-            values.put(DatabaseHandler.KEY_IDPERIOD, schedule.getPeriod().getId());
-            values.put(DatabaseHandler.KEY_SCHEDULE, BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
-
-            // insert the schedule in the DB
-            db.insert(DatabaseHandler.TABLE_SCHEDULE, null, values);
-
+            String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_SCHEDULE + " ( " + DatabaseHandler.KEY_LINENUMBER +
+                    ", " + DatabaseHandler.KEY_IDSTATION + ", " + DatabaseHandler.KEY_DIRECTION + ", " +
+                    DatabaseHandler.KEY_IDPERIOD + ", " + DatabaseHandler.KEY_SCHEDULE + ") VALUES (?, ?, ?, ?, ?)";
+            SQLiteStatement stmt = db.compileStatement(sql);
+            stmt.bindString(1, schedule.getLineStation().getLine().getLineNumber());
+            stmt.bindLong(2, schedule.getLineStation().getStation().getId());
+            stmt.bindString(3, schedule.getLineStation().getDirection());
+            stmt.bindLong(4, schedule.getPeriod().getId());
+            stmt.bindString(5, BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
+            stmt.execute();
+            stmt.clearBindings();
         }
 
         db.setTransactionSuccessful();
