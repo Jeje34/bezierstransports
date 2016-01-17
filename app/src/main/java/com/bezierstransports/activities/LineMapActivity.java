@@ -181,11 +181,19 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
                     bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
             }
 
+//            List<Schedule> next3Departures = ScheduleDAO.getScheduleDAO().get3NextDepartures(result.get(i));
             /* add markers for each station of the line on the map
             and save marker in a list */
+
+            Marker m = map.addMarker(new MarkerOptions()
+                            .position(new LatLng(station.getLatitude(), station.getLongitude()))
+                            .title(station.getStationName())
+                            .icon(bd));
+            markers.add(m);
             markers.add(map.addMarker(new MarkerOptions()
                     .position(new LatLng(station.getLatitude(), station.getLongitude()))
                     .title(station.getStationName())
+                    .snippet(getString(R.string.next_departure))
                     .icon(bd)));
         }
     }

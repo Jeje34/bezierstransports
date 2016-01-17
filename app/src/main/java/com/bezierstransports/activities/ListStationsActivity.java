@@ -21,6 +21,7 @@ import com.bezierstransports.database.ScheduleDAO;
 import com.bezierstransports.model.Line;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Schedule;
+import com.bezierstransports.tasks.DownloadFileTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,6 +115,8 @@ public class ListStationsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_upload_schedules:
+                downloadPDF(line.getLineNumber());
+                return true;
             case R.id.action_map:
                 Intent i = new Intent(ListStationsActivity.this, LineMapActivity.class);
                 i.putExtra("line", line);
@@ -124,6 +127,30 @@ public class ListStationsActivity extends AppCompatActivity {
         }
     }
 
+    private void downloadPDF(String lineNumber) {
+        String url = "http://www.beziers-transports.com/ftp/FR_documents/";
+        switch (lineNumber) {
+            case "1":
+                url += "L1-Web.pdf";
+                break;
+            case "2":
+                url += "L2-Web.pdf";
+                break;
+            case "3":
+                url += "L3-%203%20nov%202014%20-%20Web.pdf";
+                break;
+            case "4":
+                url += "L4-Web.pdf";
+                break;
+            case "5":
+                url += "L5.pdf";
+                break;
+            case "15":
+                url += "L15-Web%20corig%C3%A9e.pdf";
+                break;
+        }
+        new DownloadFileTask(this).execute(url, "L" + lineNumber + ".pdf");
+    }
 
     private void getData (final String direction) {
         new AsyncTask<Void, Void, List<LineStation>>() {

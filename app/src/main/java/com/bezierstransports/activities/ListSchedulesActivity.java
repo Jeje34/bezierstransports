@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.bezierstransports.BeziersTransports;
 import com.bezierstransports.R;
@@ -31,6 +32,7 @@ public class ListSchedulesActivity extends AppCompatActivity {
     List<Schedule> scheduleList;
     RadioButton radioButtonAller;
     RadioButton radioButtonRetour;
+    TextView textViewNoSchedules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class ListSchedulesActivity extends AppCompatActivity {
         " - " + lineStation.getStation().getStationName());
         BeziersTransports.initActionBar(this, lineStation.getLine().getColor());
 
+        textViewNoSchedules = (TextView) findViewById(R.id.tv_NoSchedules);
         listViewSchedules = (ListView) findViewById(R.id.listViewSchedules);
         radioGroupPeriod = (RadioGroup) findViewById(R.id.radio_group_period);
         radioButtonAller = (RadioButton) findViewById(R.id.radio_button_aller_2);
@@ -225,8 +228,15 @@ public class ListSchedulesActivity extends AppCompatActivity {
             }
 
             protected void onPostExecute(java.util.List<Schedule> result) {
-                adapterSchedule = new AdapterSchedule(getBaseContext(), android.R.layout.simple_list_item_1, result);
-                listViewSchedules.setAdapter(adapterSchedule);
+                if (result.isEmpty()) {
+                    listViewSchedules.setVisibility(View.GONE);
+                    textViewNoSchedules.setVisibility(View.VISIBLE);
+                } else {
+                    listViewSchedules.setVisibility(View.VISIBLE);
+                    textViewNoSchedules.setVisibility(View.GONE);
+                    adapterSchedule = new AdapterSchedule(getBaseContext(), android.R.layout.simple_list_item_1, result);
+                    listViewSchedules.setAdapter(adapterSchedule);
+                }
             }
         }.execute();
     }

@@ -1,4 +1,4 @@
-package com.bezierstransports;
+package com.bezierstransports.sensors;
 
 /**
  * Created by Jérémy Pastor on 23/12/2015.

@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.bezierstransports.sensors.ShakeEventListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
