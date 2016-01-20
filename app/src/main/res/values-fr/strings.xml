@@ -28,4 +28,14 @@
     <string name="stayPress">Restez appuyé sur une station pour voir tous les horaires de passage à celle-ci</string>
     <string name="calculateDirectionNearestStation">Calcul de la direction à prendre pour rejoindre la station la plus proche</string>
     <string name="calculateDirectionStation">Calcul de la direction à prendre pour rejoindre la station</string>
+
+    <string name="lundi">lundi</string>
+    <string name="mardi">mardi</string>
+    <string name="mercredi">mercredi</string>
+    <string name="jeudi">jeudi</string>
+    <string name="vendredi">vendredi</string>
+    <string name="samediMin">samedi</string>
+    <string name="dimancheMin">dimanche</string>
+
+
 </resources>

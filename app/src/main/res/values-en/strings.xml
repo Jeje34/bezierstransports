@@ -29,6 +29,14 @@
     <string name="getData">Loading... Please wait.</string>
     <string name="dowloadOK"> has been downloaded successfully ! </string>
     <string name="stayPress">Stay press on item to see all schedules</string>
-    <string name="calculateDirectionNearestStation">Calcul de la direction à prendre pour rejoindre la station la plus proche</string>
-    <string name="calculateDirectionStation">Calcul de la direction à prendre pour rejoindre la station</string>
+    <string name="calculateDirectionNearestStation">Calculating the direction to follow to reach the nearest bus station</string>
+    <string name="calculateDirectionStation">Calculating the direction to follow to reach the bus station</string>
+
+    <string name="lundi">monday</string>
+    <string name="mardi">tuesday</string>
+    <string name="mercredi">wednesday</string>
+    <string name="jeudi">thursday</string>
+    <string name="vendredi">friday</string>
+    <string name="samediMin">saturday</string>
+    <string name="dimancheMin">sunday</string>
 </resources>

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
 import com.bezierstransports.BeziersTransports;
+import com.bezierstransports.R;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Schedule;
 
@@ -22,10 +23,12 @@ public class ScheduleDAO {
 
     private static ScheduleDAO scheduleDAO = null;
     private DatabaseHandler dh;
+    private Context context;
 
 
     private ScheduleDAO(Context context){
         dh = new DatabaseHandler(context);
+        this.context = context;
     }
 
     public final static ScheduleDAO getScheduleDAO() {
@@ -70,28 +73,6 @@ public class ScheduleDAO {
         db.close();
     }
 
-    /*public void addSchedule(Schedule schedule)  {
-        SQLiteDatabase db = this.dh.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        // insert line and station
-        LineStationDAO.getLineStationDAO().addLineStation(schedule.getLineStation());
-
-        // insert period
-        PeriodDAO.getPeriodDAO().addPeriod(schedule.getPeriod());
-
-        values.put(DatabaseHandler.KEY_LINENUMBER, schedule.getLineStation().getLine().getLineNumber());
-        values.put(DatabaseHandler.KEY_IDSTATION, schedule.getLineStation().getStation().getId());
-        values.put(DatabaseHandler.KEY_DIRECTION, schedule.getLineStation().getDirection());
-        values.put(DatabaseHandler.KEY_IDPERIOD, schedule.getPeriod().getId());
-        values.put(DatabaseHandler.KEY_SCHEDULE, BeziersTransports.getScheduleFormat().format(schedule.getSchedule()));
-
-        // insert the schedule in the DB
-        db.insert(DatabaseHandler.TABLE_SCHEDULE, null, values);
-
-    }*/
-
-
     public List<Schedule> get3NextDepartures(LineStation ls) {
         SQLiteDatabase db = this.dh.getReadableDatabase();
         List<Schedule> schedulesList = new ArrayList<Schedule>();
@@ -99,16 +80,17 @@ public class ScheduleDAO {
         // select the period that match with the current day (to improve)
         String period1, period2;
         String dayString = BeziersTransports.getDayFormat().format(BeziersTransports.getDay());
-        if (dayString.equals("lundi") || dayString.equals("mardi") || dayString.equals("mercredi")
-                || dayString.equals("jeudi") || dayString.equals("vendredi")) {
+        if (dayString.equals(context.getString(R.string.lundi)) ||
+                dayString.equals(context.getString(R.string.mardi)) ||
+                dayString.equals(context.getString(R.string.mercredi)) ||
+                dayString.equals(context.getString(R.string.jeudi)) ||
+                dayString.equals(context.getString(R.string.vendredi))) {
             period1 = "1"; // because idPeriod = 1 <=> LS
             period2 = "3"; // because idPeriod = 3 <=> LV
-        }
-        else if (dayString.equals("samedi")) {
+        } else if (dayString.equals(context.getString(R.string.samediMin))) {
             period1 = "4"; // because idPeriod = 4 <=> S
             period2 = "1"; // because idPeriod = 1 <=> LS
-        }
-        else { // dayString = "Sun"
+        } else { // dayString = "sunday" ou "dimanche"
             period1 = "2";
             period2 = "2";  // because idPeriod = 2 <=> D
         }
