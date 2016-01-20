@@ -1,5 +1,7 @@
 package com.bezierstransports;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -124,11 +126,23 @@ public class BeziersTransports extends Application {
             bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorActionStatusBar)));
             bar.setDisplayShowTitleEnabled(false);
             bar.setDisplayShowTitleEnabled(true);
-
-            //bar.setIcon(R.drawable.logo_beziers_transports);
-            //bar.setDisplayShowHomeEnabled(true);
         }
+    }
 
+    public static void initActionBar(Activity activity, String colorActionStatusBar) {
+        // if version used is newer that Lollipop (>= 5.0 API 21)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // change color of the top bar
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(Color.parseColor(colorActionStatusBar));
+
+            ActionBar bar = activity.getActionBar();
+            bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorActionStatusBar)));
+            bar.setDisplayShowTitleEnabled(false);
+            bar.setDisplayShowTitleEnabled(true);
+        }
     }
 
 }

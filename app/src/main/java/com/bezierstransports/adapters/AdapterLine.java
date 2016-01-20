@@ -18,8 +18,11 @@ import java.util.List;
  */
 public class AdapterLine extends ArrayAdapter<Line> {
 
+    private Context context;
+
     public AdapterLine (Context context, int textViewResourceId, List<Line> objects) {
         super(context, textViewResourceId, objects);
+        this.context = context;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -46,7 +49,7 @@ public class AdapterLine extends ArrayAdapter<Line> {
 
         viewHolder.bigLineNumber.setBackgroundColor(Color.parseColor(line.getColor()));
         viewHolder.bigLineNumber.setTextColor(Color.WHITE);
-        viewHolder.lineNumber.setText("Ligne " + line.getLineNumber());
+        viewHolder.lineNumber.setText(context.getString(R.string.ligne) + " " + line.getLineNumber());
         viewHolder.lineNumber.setTextColor(Color.parseColor(line.getColor()));
         viewHolder.lineName.setText(line.getLineName());
         return convertView;

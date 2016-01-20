@@ -80,10 +80,6 @@ public class ListLinesActivity extends AppCompatActivity {
             case R.id.action_sync:
                 new GetDataTask(ListLinesActivity.this, listViewLines, adapterLine).execute();
                 return true;
-            case R.id.action_map:
-                Intent i = new Intent(ListLinesActivity.this, LineMapActivity.class);
-                startActivity(i);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -62,7 +62,7 @@ public class ListStationsActivity extends AppCompatActivity {
 
         setTitle(getString(R.string.ligne) + " " + line.getLineNumber());
 
-        Toast.makeText(getApplicationContext(), "Restez appuyé sur une station pour voir tous les horaires de passage à celle-ci",
+        Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.stayPress),
                 Toast.LENGTH_LONG).show();
 
         radioButtonAller.setOnClickListener(radioButtonAllerListener);

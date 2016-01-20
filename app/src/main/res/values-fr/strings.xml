@@ -25,4 +25,7 @@
     <string name="sync">Synchroniser les données avec celles du serveur</string>
     <string name="getData">Synchronisation des données. Veuillez patientez, svp</string>
     <string name="dowloadOK"> a été téléchargé avec succès !</string>
+    <string name="stayPress">Restez appuyé sur une station pour voir tous les horaires de passage à celle-ci</string>
+    <string name="calculateDirectionNearestStation">Calcul de la direction à prendre pour rejoindre la station la plus proche</string>
+    <string name="calculateDirectionStation">Calcul de la direction à prendre pour rejoindre la station</string>
 </resources>

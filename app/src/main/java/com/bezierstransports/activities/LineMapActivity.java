@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -68,17 +69,22 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
         if (line != null) {
             line.setStations(StationDAO.getStationDAO().getStations(line));
             busLine = line;
+
+            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.calculateDirectionNearestStation),
+                    Toast.LENGTH_LONG).show();
         }
         lineStation = (LineStation) i.getParcelableExtra("lineStation");
         if (lineStation != null) {
             lineStation.getLine().setStations(StationDAO.getStationDAO().getStations(lineStation.getLine()));
             busLine = lineStation.getLine();
-        }
 
-        if (busLine != null) {
-            listLineStationA = LineStationDAO.getLineStationDAO().getLineStations(busLine, "A");
-            listLineStationR = LineStationDAO.getLineStationDAO().getLineStations(busLine, "R");
+            Toast.makeText(getApplicationContext(),
+                    getApplicationContext().getString(R.string.calculateDirectionStation) +
+                            " " + lineStation.getStation().getStationName(),
+                    Toast.LENGTH_LONG).show();
         }
+        listLineStationA = LineStationDAO.getLineStationDAO().getLineStations(busLine, "A");
+        listLineStationR = LineStationDAO.getLineStationDAO().getLineStations(busLine, "R");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -86,6 +92,7 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10.0f, mLocationListener);
         }
 
+        // map
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -131,12 +138,12 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         this.map = retMap;
 
+        drawLine(listLineStationA, busLine.getColor());
+        drawLine(listLineStationR, busLine.getColor());
         List<Station> stations = new ArrayList<Station>();
         if (line != null) {
             stations = line.getStations();
             drawMarkers(stations);
-            drawLine(listLineStationA, busLine.getColor());
-            drawLine(listLineStationR, busLine.getColor());
             // zoom and move camera to see all stations of the line
             map.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                 public void onMapLoaded() {

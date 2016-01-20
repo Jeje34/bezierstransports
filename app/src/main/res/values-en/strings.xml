@@ -28,4 +28,7 @@
     <string name="sync">Data synchronization</string>
     <string name="getData">Loading... Please wait.</string>
     <string name="dowloadOK"> has been downloaded successfully ! </string>
+    <string name="stayPress">Stay press on item to see all schedules</string>
+    <string name="calculateDirectionNearestStation">Calcul de la direction à prendre pour rejoindre la station la plus proche</string>
+    <string name="calculateDirectionStation">Calcul de la direction à prendre pour rejoindre la station</string>
 </resources>
