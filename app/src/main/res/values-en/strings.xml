@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Beziers Transports</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_list_stations">ListStationsActivity</string>
+
+    <string name="ligne">Line</string>
+    <string name="ligne_direction">Line / Direction</string>
+    <string name="station">Station</string>
+    <string name="next_departure">Next departure :</string>
+
+    <string name="upload_schedules">Download schedules in PDF</string>
+    <string name="next_departure_tomorrow">No more departure for today !</string>
+    <string name="title_activity_list_schedules">ListSchedulesActivity</string>
+    <string name="periode">Period</string>
+    <string name="horaires">Schedules</string>
+    <string name="lundiASamedi">Monday to Saturday</string>
+    <string name="dimanche">Sunday</string>
+    <string name="title_activity_line_map">LineMapActivity</string>
+    <string name="map">Consult the map</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="samedi">Saturday</string>
+    <string name="lundiAVendredi">Monday to Friday</string>
+    <string name="noSchedules">No bus arrivals in this station for this direction !</string>
+    <string name="fileDownloaded">The file has been successfully downloaded !</string>
+    <string name="noApplicationPDF">No Application available to view PDF !</string>
+    <string name="sync">Data synchronization</string>
+    <string name="getData">Loading... Please wait.</string>
+    <string name="dowloadOK"> has been downloaded successfully ! </string>
+</resources>

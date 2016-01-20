@@ -74,8 +74,11 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
             lineStation.getLine().setStations(StationDAO.getStationDAO().getStations(lineStation.getLine()));
             busLine = lineStation.getLine();
         }
-        listLineStationA = LineStationDAO.getLineStationDAO().getLineStations(busLine, "A");
-        listLineStationR = LineStationDAO.getLineStationDAO().getLineStations(busLine, "R");
+
+        if (busLine != null) {
+            listLineStationA = LineStationDAO.getLineStationDAO().getLineStations(busLine, "A");
+            listLineStationR = LineStationDAO.getLineStationDAO().getLineStations(busLine, "R");
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -83,7 +86,6 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10.0f, mLocationListener);
         }
 
-        // map
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -181,10 +183,8 @@ public class LineMapActivity extends FragmentActivity implements OnMapReadyCallb
                     bd = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
             }
 
-//            List<Schedule> next3Departures = ScheduleDAO.getScheduleDAO().get3NextDepartures(result.get(i));
             /* add markers for each station of the line on the map
             and save marker in a list */
-
             Marker m = map.addMarker(new MarkerOptions()
                             .position(new LatLng(station.getLatitude(), station.getLongitude()))
                             .title(station.getStationName())

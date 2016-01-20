@@ -3,8 +3,6 @@ package com.bezierstransports.service;
 import android.content.Context;
 import android.util.Log;
 
-import com.bezierstransports.BeziersTransports;
-import com.bezierstransports.database.DatabaseHandler;
 import com.bezierstransports.database.ScheduleDAO;
 import com.bezierstransports.model.LineStation;
 import com.bezierstransports.model.Period;
@@ -63,7 +61,7 @@ public class WebService {
                 // return list deserialized by GSON
                 Response response = gson.fromJson(reader, Response.class);
                 // delete the database
-                BeziersTransports.getAppContext().deleteDatabase(DatabaseHandler.DATABASE_NAME);
+                // BeziersTransports.getAppContext().deleteDatabase(DatabaseHandler.DATABASE_NAME);
                 // write all objects in database
 
                 ArrayList<Schedule> schedulesList = new ArrayList<Schedule>();

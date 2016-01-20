@@ -38,7 +38,7 @@ public class GetDataTask extends AsyncTask<Void, Void, List<Line>> {
 
     protected void onPreExecute() {
         // display a feedback during loading
-        dialog.setMessage("Premier lancement de l'application : nous récupérons les données. Veuillez patientez, svp");
+        dialog.setMessage(BeziersTransports.getAppContext().getString(R.string.getData));
         dialog.setCancelable(false);
         dialog.show();
     }

@@ -41,8 +41,8 @@ public final class StationDAO {
 
     // add a bus station into the database
     public void addStation(SQLiteDatabase db, Station station) {
-            //insert city
-            CityDAO.getCityDAO().addCity(db, station.getCity());
+        //insert city
+        CityDAO.getCityDAO().addCity(db, station.getCity());
 
         String sql = "INSERT OR REPLACE INTO " + DatabaseHandler.TABLE_STATION + " ( " + DatabaseHandler.KEY_ID + ","
                 + DatabaseHandler.KEY_STATIONNAME + ", " + DatabaseHandler.KEY_LATITUDE + ", " + DatabaseHandler.KEY_LONGITUDE +

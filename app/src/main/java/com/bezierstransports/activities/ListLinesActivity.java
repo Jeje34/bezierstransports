@@ -77,7 +77,9 @@ public class ListLinesActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_upload_schedules:
+            case R.id.action_sync:
+                new GetDataTask(ListLinesActivity.this, listViewLines, adapterLine).execute();
+                return true;
             case R.id.action_map:
                 Intent i = new Intent(ListLinesActivity.this, LineMapActivity.class);
                 startActivity(i);
